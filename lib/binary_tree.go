@@ -7,7 +7,7 @@ import (
 type Node struct {
     Value         int
     Index         int
-    Sibling       *Node
+    Parent       *Node
     IsLeftSibling bool
 }
 
@@ -43,7 +43,8 @@ func (binTree *BinaryTree) BuildFromLeafNodes(leafs []int) {
             done = true
             continue // abort loop if level has one node (at root)
         }
-        start := binTree.LevelStart[lvl-1]; end := binTree.LevelEnd[lvl-1]
+        start   := binTree.LevelStart[lvl-1]; end := binTree.LevelEnd[lvl-1]
+        // currInd := end
         log.Printf("START: %d, END: %d, LVL: %d, LVL_NUM_NODES: %d\n", start, end, lvl, lvlNumNodes)
         for i := start; i < end; i += 2 {
             if i + 1 >= end { // end-of-level element
@@ -62,4 +63,64 @@ func (binTree *BinaryTree) BuildFromLeafNodes(leafs []int) {
         }
         lvl++
     }
+}
+
+func (binTree *BinaryTree) PropagateLeafValue(k int, kthValue int) {
+    binTree.Nodes[k].Value = kthValue
+    // propagate any change up the tree starting at kth (leaf) node
+    lvl      := binTree.GetLevel(k)
+    startInd := binTree.LevelStart[lvl]
+    endInd   := binTree.LevelEnd[lvl]
+    currInd  := k; pow    := 2
+    done     := false
+    for ! done {
+        parentInd  := endInd + k/pow
+        if binTree.Nodes[currInd].IsLeftSibling {
+            if currInd != endInd - 1 { // paired with RightSibling
+                if binTree.Nodes[currInd].Value < binTree.Nodes[currInd+1].Value {
+                    binTree.Nodes[parentInd].Value   = binTree.Nodes[currInd].Value
+                    binTree.Nodes[parentInd].Index = binTree.Nodes[currInd].Index
+                } else {
+                    binTree.Nodes[parentInd].Value = binTree.Nodes[currInd+1].Value
+                    binTree.Nodes[parentInd].Index = binTree.Nodes[currInd+1].Index
+                }
+            } else { // rightmost node has no right sibling, propagate to parent
+                binTree.Nodes[parentInd].Value = binTree.Nodes[currInd].Value
+                binTree.Nodes[parentInd].Index = binTree.Nodes[currInd].Index
+            }
+            // log.Printf("AFTER:  [%d]curr[%d] = %d, [%d]sib[%d] = %d, [%d]parent[%d] = %d\n", binTree.Nodes[currInd].Index, currInd, binTree.Nodes[currInd].Value, binTree.Nodes[currInd+1].Index, (currInd+1), binTree.Nodes[currInd+1].Value, binTree.Nodes[parentInd].Index, parentInd, binTree.Nodes[parentInd].Value)
+        } else {
+            if binTree.Nodes[currInd].Value < binTree.Nodes[currInd-1].Value {
+                binTree.Nodes[parentInd].Value = binTree.Nodes[currInd].Value
+                binTree.Nodes[parentInd].Index = binTree.Nodes[currInd].Index
+            } else {
+                binTree.Nodes[parentInd].Value = binTree.Nodes[currInd-1].Value
+                binTree.Nodes[parentInd].Index = binTree.Nodes[currInd-1].Index
+            }
+        }
+
+        // set up next iteration
+        currInd    = parentInd
+        pow       *= 2
+        oldEndInd := endInd
+        if (endInd - startInd) % 2 == 0 {
+            endInd += (endInd - startInd)/2
+        } else {
+            endInd += (endInd - startInd)/2 + 1
+        }
+        startInd   = oldEndInd
+        if startInd == endInd - 1 { // termination condition
+            done = true
+        }
+    }
+}
+
+func (binTree *BinaryTree) GetLevel(k int) int {
+    lvl   := -1
+    for i := range binTree.LevelStart {
+        if k >= binTree.LevelStart[i] && k < binTree.LevelEnd[i] {
+            lvl = i
+        }
+    }
+    return lvl
 }

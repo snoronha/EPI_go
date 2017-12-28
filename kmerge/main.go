@@ -33,12 +33,36 @@ func main() {
     generateDataPtr := flag.Bool("gen", false, "generate data, an integer")
     flag.Parse()
 
+    testLinkedList()
+    return
+
     if *generateDataPtr {
         generateData()
         return
     }
 
     mergeData()
+}
+
+func testLinkedList() {
+    a  := []int{}
+    b  := []int{}
+    for i := 1; i < 11; i++ {
+        a = append(a, i)
+        b = append(b, 22 - i * 2)
+    }
+    aPtr := lib.CreateLinkedList(a)
+    bPtr := lib.CreateLinkedList(b)
+    log.Printf("A:       %s\n", aPtr.ToStringList())
+    log.Printf("B:       %s\n", bPtr.ToStringList())
+    aPtr  = lib.ReverseList(aPtr)
+    log.Printf("REVERSE: %s\n", aPtr.ToStringList())
+    aPtr  = lib.ReverseList(aPtr)
+    log.Printf("REVERSE: %s\n", aPtr.ToStringList())
+    midPtr  := aPtr.GetMiddle()
+    log.Printf("MIDDLE:  %s\n", midPtr.ToString())
+    cPtr := lib.MergeSort(bPtr)
+    log.Printf("SORTED:  %s\n", cPtr.ToStringList())
 }
 
 func mergeData() {
@@ -78,6 +102,7 @@ func mergeData() {
     bTree   := lib.BinaryTree{}
     bTree.BuildFromLeafNodes(leafs)
     _ = bTree
+    return
     
     binTree := createBinaryTree(&buffers)
     log.Printf("len(Bintree): %v\n", len(binTree))
