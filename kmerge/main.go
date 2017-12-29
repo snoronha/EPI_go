@@ -33,7 +33,8 @@ func main() {
     generateDataPtr := flag.Bool("gen", false, "generate data, an integer")
     flag.Parse()
 
-    testLinkedList()
+    // testLinkedList()
+    testHeap()
     return
 
     if *generateDataPtr {
@@ -51,6 +52,7 @@ func testLinkedList() {
         a = append(a, i)
         b = append(b, 22 - i * 2)
     }
+    a     = lib.Shuffle(a)
     aPtr := lib.CreateLinkedList(a)
     bPtr := lib.CreateLinkedList(b)
     log.Printf("A:       %s\n", aPtr.ToStringList())
@@ -63,6 +65,24 @@ func testLinkedList() {
     log.Printf("MIDDLE:  %s\n", midPtr.ToString())
     cPtr := lib.MergeSort(bPtr)
     log.Printf("SORTED:  %s\n", cPtr.ToStringList())
+}
+
+func testHeap() {
+    a  := []int{}
+    for i := 1; i < 1001; i++ {
+        a = append(a, i)
+    }
+    a     = lib.Shuffle(a)
+    heap := lib.BinaryHeap{Min: true}
+    for _, v := range a { heap.Insert(v); }
+    sorted := []int{}
+    start   := time.Now()
+    for ! heap.IsEmpty() {
+        sorted = append(sorted, heap.ExtractRoot())
+    }
+    log.Printf("SORTED: %v\n", sorted)
+    elapsed := time.Since(start)
+    log.Printf("elapsed: %s\n", elapsed)
 }
 
 func mergeData() {
