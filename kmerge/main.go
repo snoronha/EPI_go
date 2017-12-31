@@ -34,7 +34,8 @@ func main() {
     flag.Parse()
 
     // testLinkedList()
-    testHeap()
+    // testHeap()
+    testArrays()
     return
 
     if *generateDataPtr {
@@ -83,6 +84,41 @@ func testHeap() {
     log.Printf("SORTED: %v\n", sorted)
     elapsed := time.Since(start)
     log.Printf("elapsed: %s\n", elapsed)
+}
+
+func testArrays() {
+    s := rand.NewSource(time.Now().UnixNano())
+    r := rand.New(s)
+
+    a   := []int{}
+    for i := 1; i < 31; i++ { a = append(a, i); }
+    a    = lib.Shuffle(a)
+    lis := lib.LongestIncreasingSubsequenceDP(a) // compute LIS using DP
+    log.Printf("LIS: seq: %v, lis = %d\n", a, lis)
+
+    maxProfit := lib.BuySell1Stock(a)
+    log.Printf("BUYSELL1: seq: %v, maxprofit = %d\n", a, maxProfit)
+
+    b  := []int{}
+    for i := 1; i < 16; i++ { b = append(b, i); b = append(b, i+2); }
+    b    = lib.Shuffle(b)
+    log.Printf("DELETE: before %v\n", b)
+    lib.DeleteArrayElement(b, 10)
+    log.Printf("DELETE: after  %v\n", b)
+
+    a  = []int{}
+    for i := 3; i < 27; i += 3 { a = append(a, i); }
+    b  = []int{}
+    for i := 2; i < 9; i += 2 { b = append(b, i); }
+    median := lib.MedianOfTwoArrays(a, b)
+    log.Printf("MEDIAN: seq1 %v, seq2 %v, median: %v\n", a, b, median)
+
+    a = []int{}
+    for i := 0; i < 30; i++ { a = append(a, r.Intn(30) + 1); }
+    dups := lib.FindDuplicates(a)
+    log.Printf("FINDDUPS: seq: %v, dups: %v\n", a, dups)
+
+
 }
 
 func mergeData() {
