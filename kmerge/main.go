@@ -60,13 +60,13 @@ func testLinkedList() {
     log.Printf("A:       %s\n", aPtr.ToStringList())
     log.Printf("B:       %s\n", bPtr.ToStringList())
     aPtr  = lib.ReverseList(aPtr)
-    log.Printf("REVERSE: %s\n", aPtr.ToStringList())
+    log.Printf("[Reverse]: %s\n", aPtr.ToStringList())
     aPtr  = lib.ReverseList(aPtr)
-    log.Printf("REVERSE: %s\n", aPtr.ToStringList())
+    log.Printf("[Reverse]: %s\n", aPtr.ToStringList())
     midPtr  := aPtr.GetMiddle()
-    log.Printf("MIDDLE:  %s\n", midPtr.ToString())
+    log.Printf("[Middle]:  %s\n", midPtr.ToString())
     cPtr := lib.MergeSort(bPtr)
-    log.Printf("SORTED:  %s\n", cPtr.ToStringList())
+    log.Printf("[Sorted]:  %s\n", cPtr.ToStringList())
 }
 
 func testHeap() {
@@ -82,7 +82,7 @@ func testHeap() {
     for ! heap.IsEmpty() {
         sorted = append(sorted, heap.ExtractRoot())
     }
-    log.Printf("SORTED: %v\n", sorted)
+    log.Printf("[Sorted]: %v\n", sorted)
     elapsed := time.Since(start)
     log.Printf("elapsed: %s\n", elapsed)
 }
@@ -95,52 +95,58 @@ func testArrays() {
     for i := 1; i < 31; i++ { a = append(a, i); }
     a    = lib.Shuffle(a)
     lis := lib.LongestIncreasingSubsequenceDP(a) // compute LIS using DP
-    log.Printf("LIS: seq: %v, lis = %d\n", a, lis)
+    log.Printf("[LIS]: seq: %v, lis = %d\n", a, lis)
 
     maxProfit := lib.BuySell1Stock(a)
-    log.Printf("BUYSELL1: seq: %v, maxprofit = %d\n", a, maxProfit)
+    log.Printf("[BuySell1]: seq: %v, maxprofit = %d\n", a, maxProfit)
 
     b  := []int{}
     for i := 1; i < 16; i++ { b = append(b, i); b = append(b, i+2); }
     b    = lib.Shuffle(b)
-    log.Printf("DELETE: before %v\n", b)
+    log.Printf("[Delete]: before %v\n", b)
     lib.DeleteArrayElement(b, 10)
-    log.Printf("DELETE: after  %v\n", b)
+    log.Printf("[Delete]: after  %v\n", b)
 
     a  = []int{}
     for i := 3; i < 27; i += 3 { a = append(a, i); }
     b  = []int{}
     for i := 2; i < 9; i += 2 { b = append(b, i); }
     median := lib.MedianOfTwoArrays(a, b)
-    log.Printf("MEDIAN: seq1 %v, seq2 %v, median: %v\n", a, b, median)
+    log.Printf("[Median]: seq1 %v, seq2 %v, median: %v\n", a, b, median)
 
     a = []int{}
     for i := 0; i < 30; i++ { a = append(a, r.Intn(30) + 1); }
     dups := lib.FindDuplicates(a)
-    log.Printf("FINDDUPS: seq: %v, dups: %v\n", a, dups)
+    log.Printf("[FindDups]: seq: %v, dups: %v\n", a, dups)
 }
 
 func testStrings() {
     txt := "abfghstwhfkdj"; srch := "fghs"
-    log.Printf("STRSTR: %s, %s, %v\n", txt, srch, lib.StrStr(txt, srch))
+    log.Printf("[StrStr]: %s, %s, %v\n", txt, srch, lib.StrStr(txt, srch))
 
-    log.Printf("INTTOROMAN: %d, %s\n", 3999, lib.IntegerToRoman(3999))
-    log.Printf("INTTOROMAN: %d, %s\n", 94, lib.IntegerToRoman(94))
-    log.Printf("INTTOROMAN: %d, %s\n", 15, lib.IntegerToRoman(15))
+    log.Printf("[IntToRoman]: %d, %s\n", 3999, lib.IntegerToRoman(3999))
+    log.Printf("[IntToRoman]: %d, %s\n", 94, lib.IntegerToRoman(94))
+    log.Printf("[IntToRoman]: %d, %s\n", 15, lib.IntegerToRoman(15))
 
-    log.Printf("ROMANTOINT: %s, %d\n", "MMMCMXCIX", lib.RomanToInteger("MMMCMXCIX"))
-    log.Printf("ROMANTOINT: %s, %d\n", "XCIV", lib.RomanToInteger("XCIV"))
+    log.Printf("[RomanToInt]: %s, %d\n", "MMMCMXCIX", lib.RomanToInteger("MMMCMXCIX"))
+    log.Printf("[RomanToInt]: %s, %d\n", "XCIV", lib.RomanToInteger("XCIV"))
 
-    log.Printf("ATOI: %s, %d\n", "35678", lib.AtoI("35678"))
-    log.Printf("ATOI: %s, %d\n", "34534564567756767", lib.AtoI("34534564567756767"))
+    log.Printf("[AtoI]: %s, %d\n", "35678", lib.AtoI("35678"))
+    log.Printf("[AtoI]: %s, %d\n", "34534564567756767", lib.AtoI("34534564567756767"))
 
-    log.Printf("VALIDIP: %s, %v\n", "204.0.10.186", lib.ValidIPAddress("204.0.10.186"))
-    log.Printf("VALIDIP: %s, %v\n", "204.-1.10.186", lib.ValidIPAddress("204.-1.10.186"))
-    log.Printf("VALIDIP: %s, %v\n", "155.256.10.186", lib.ValidIPAddress("155.256.10.186"))
+    log.Printf("[ValidIP]: %s, %v\n", "204.0.10.186", lib.ValidIPAddress("204.0.10.186"))
+    log.Printf("[ValidIP]: %s, %v\n", "204.-1.10.186", lib.ValidIPAddress("204.-1.10.186"))
+    log.Printf("[ValidIP]: %s, %v\n", "155.256.10.186", lib.ValidIPAddress("155.256.10.186"))
 
     str := "kwabbaw"
     start, maxLen := lib.LongestPalindromicSequenceDP(str)
-    log.Printf("LONGESTPALDP: str: %s, start: %d, maxLen: %d\n", str, start, maxLen)
+    log.Printf("[LongestPalDP]: str: %s, start: %d, maxLen: %d\n", str, start, maxLen)
+
+    str  = "I am a real crazy person"
+    log.Printf("[ReverseString]: str: %s, Reverse: %s\n", str, lib.ReverseString(str))
+
+    log.Printf("[IsPowerOf2]: n: %d, isPower2: %v\n", 65536, lib.IsPowerOf2(int64(65536)))
+    log.Printf("[IsPowerOf2]: n: %d, isPower2: %v\n", 24566, lib.IsPowerOf2(int64(24566)))
 }
 
 func mergeData() {

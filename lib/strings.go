@@ -101,7 +101,7 @@ func ValidIPAddress(ip string) bool {
 }
 
 // Use DP to solve. Fill in diagonal (single elem), dp[i][i+1] (above diagonal) for 2-elems
-// For upper triangle, if seq[i] == seq[j] and dp[i+1][j-1] == True, then dp[i]pj = True
+// For upper triangle, if seq[i] == seq[j] and dp[i+1][j-1] == True, then dp[i][j] = True
 func LongestPalindromicSequenceDP(seq string) (int, int) {
     maxLen := 1
     start  := 0
@@ -132,4 +132,24 @@ func LongestPalindromicSequenceDP(seq string) (int, int) {
         }
     }
     return start, maxLen
+}
+
+// Convert string byte array, start exchanging bytes at each end and move to center
+func ReverseString(seq string) string {
+    if len(seq) == 0 { return "" }
+    if len(seq) == 1 { return seq }
+    var chars = []byte(seq)
+    i := 0; j := len(chars) - 1
+    for i <= j {
+        tmp := chars[j]
+        chars[j] = chars[i]
+        chars[i] = tmp
+        i++; j--
+    }
+    return string(chars)
+}
+
+// If power of 2, only 1 but is 1. n & (n-1), zeros out the first bit that's a 1
+func IsPowerOf2(n int64) bool {
+    return n > 0 && (n & (n - 1) == 0)
 }
