@@ -35,7 +35,8 @@ func main() {
 
     // testLinkedList()
     // testHeap()
-    testArrays()
+    // testArrays()
+    testStrings()
     return
 
     if *generateDataPtr {
@@ -117,8 +118,29 @@ func testArrays() {
     for i := 0; i < 30; i++ { a = append(a, r.Intn(30) + 1); }
     dups := lib.FindDuplicates(a)
     log.Printf("FINDDUPS: seq: %v, dups: %v\n", a, dups)
+}
 
+func testStrings() {
+    txt := "abfghstwhfkdj"; srch := "fghs"
+    log.Printf("STRSTR: %s, %s, %v\n", txt, srch, lib.StrStr(txt, srch))
 
+    log.Printf("INTTOROMAN: %d, %s\n", 3999, lib.IntegerToRoman(3999))
+    log.Printf("INTTOROMAN: %d, %s\n", 94, lib.IntegerToRoman(94))
+    log.Printf("INTTOROMAN: %d, %s\n", 15, lib.IntegerToRoman(15))
+
+    log.Printf("ROMANTOINT: %s, %d\n", "MMMCMXCIX", lib.RomanToInteger("MMMCMXCIX"))
+    log.Printf("ROMANTOINT: %s, %d\n", "XCIV", lib.RomanToInteger("XCIV"))
+
+    log.Printf("ATOI: %s, %d\n", "35678", lib.AtoI("35678"))
+    log.Printf("ATOI: %s, %d\n", "34534564567756767", lib.AtoI("34534564567756767"))
+
+    log.Printf("VALIDIP: %s, %v\n", "204.0.10.186", lib.ValidIPAddress("204.0.10.186"))
+    log.Printf("VALIDIP: %s, %v\n", "204.-1.10.186", lib.ValidIPAddress("204.-1.10.186"))
+    log.Printf("VALIDIP: %s, %v\n", "155.256.10.186", lib.ValidIPAddress("155.256.10.186"))
+
+    str := "kwabbaw"
+    start, maxLen := lib.LongestPalindromicSequenceDP(str)
+    log.Printf("LONGESTPALDP: str: %s, start: %d, maxLen: %d\n", str, start, maxLen)
 }
 
 func mergeData() {
