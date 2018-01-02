@@ -37,7 +37,8 @@ func main() {
     // testHeap()
     // testArrays()
     // testStrings()
-    testStackQueue()
+    // testStackQueue()
+    testHashing()
     return
 
     if *generateDataPtr {
@@ -178,6 +179,21 @@ func testStackQueue() {
     log.Printf("[NearestSmallerElem}: a: %v, smaller: %v\n", a, lib.NearestSmallerElement(a))
     a    = []int{1, 3, 0, 2, 5}
     log.Printf("[NearestSmallerElem}: a: %v, smaller: %v\n", a, lib.NearestSmallerElement(a))
+}
+
+func testHashing() {
+    s := rand.NewSource(time.Now().UnixNano())
+    r := rand.New(s)
+    _  = r
+
+    a := []int{1, 9, 3, 22, 10, 4, 20, 2, 23, 6, 5, 34, 24, 8, 25}
+    log.Printf("[LongestConsecutiveSeq]: a: %v, longest: %d\n", a, lib.LongestConsecutiveSequence(a))
+
+    a  = []int{1, 9, 3, 22, 10, 4, 20, 2, 23, 6, 5, 34, 24, 8, 25}
+    log.Printf("[FourSum]: a: %v, target: %d, solutions: %v\n", a, 14, lib.FourSum(a, 14))
+
+    strs := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
+    log.Printf("[GroupAnagrams]: strs: %v, groups: %v\n", strs, lib.GroupAnagrams(strs))
 }
 
 func mergeData() {
