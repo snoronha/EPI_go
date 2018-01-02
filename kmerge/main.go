@@ -36,7 +36,8 @@ func main() {
     // testLinkedList()
     // testHeap()
     // testArrays()
-    testStrings()
+    // testStrings()
+    testStackQueue()
     return
 
     if *generateDataPtr {
@@ -147,6 +148,36 @@ func testStrings() {
 
     log.Printf("[IsPowerOf2]: n: %d, isPower2: %v\n", 65536, lib.IsPowerOf2(int64(65536)))
     log.Printf("[IsPowerOf2]: n: %d, isPower2: %v\n", 24566, lib.IsPowerOf2(int64(24566)))
+}
+
+func testStackQueue() {
+    s := rand.NewSource(time.Now().UnixNano())
+    r := rand.New(s)
+
+    a := []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}
+    log.Printf("[TrapRainWater]: Input: %v, Water: %d\n", a, lib.TrapRainWater(a))
+    a  = []int{3, 1, 2, 4}
+    log.Printf("[TrapRainWater]: Input: %v, Water: %d\n", a, lib.TrapRainWater(a))
+
+    validPs := ""
+    lib.ValidParentheses(3, 3, "", &validPs)
+    log.Printf("[ValidParens]: n: %d, res: %s\n", 3, validPs)
+
+    minStack := lib.MinStack{}
+    for i := 0; i < 10; i++ { minStack.Push(r.Intn(30) + 1); }
+    log.Printf("[MinStack]: stack: %v, top: %d, min: %d\n", minStack.Nodes, minStack.Top(), minStack.GetMin())
+    for i := 0; i < 5; i++ { minStack.Pop(); }
+    log.Printf("[MinStack]: stack: %v, top: %d, min: %d\n", minStack.Nodes, minStack.Top(), minStack.GetMin())
+
+    str := "((a+(b))+(c+d))"
+    log.Printf("[FIX RedundantParens]: str: %s, isRedundant: %v\n", str, lib.IsRedundantParens(str))
+    str  = "((a+b)+(c+d))"
+    log.Printf("[FIX RedundantParens]: str: %s, isRedundant: %v\n", str, lib.IsRedundantParens(str))
+
+    a    = []int{1, 6, 4, 10, 2, 5}
+    log.Printf("[NearestSmallerElem}: a: %v, smaller: %v\n", a, lib.NearestSmallerElement(a))
+    a    = []int{1, 3, 0, 2, 5}
+    log.Printf("[NearestSmallerElem}: a: %v, smaller: %v\n", a, lib.NearestSmallerElement(a))
 }
 
 func mergeData() {
