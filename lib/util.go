@@ -15,3 +15,10 @@ func Shuffle(vals []int) []int {
     }
     return ret
 }
+
+func GCDRemainder(a, b int) int {
+	for b != 0 {
+		a, b = b, a%b
+	}
+	return a
+}

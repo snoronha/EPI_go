@@ -3,6 +3,7 @@ package lib
 import (
     _ "log"
     "sort"
+    "strconv"
     "strings"
 )
 
@@ -32,6 +33,25 @@ func LongestConsecutiveSequence(seq []int) int {
         }
     }
     return ans
+}
+
+func TwoSum(seq []int, target int) [][]int {
+    res    := [][]int{}
+    seqMap := map[int][]int{}
+    for i, v := range seq {
+        if _, ok := seqMap[v]; !ok { seqMap[v] = []int{}; }
+        seqMap[v] = append(seqMap[v], i)
+    }
+    for i, v := range seq {
+        if v <= target - v {
+            if _, ok := seqMap[target-v]; ok {
+                for _, j := range seqMap[target-v] {
+                    res = append(res, []int{i, j, v, target-v}) // [i, j, vali, valj]
+                }
+            }
+        }
+    }
+    return res
 }
 
 // Given a sequence, and a target, find 4 numbers that sum up to the target
@@ -93,4 +113,93 @@ func GroupAnagrams(strs []string) [][]string {
     return groups
 }
 
+// Observation: for any fraction a/b, the decimal version MUST recur at a max of (b-1) digits
+// Reason: the rem is in [0,b-1]. If the rem == 0, process terminates.
+// Else it can cycle through a max of b-1 other remainders
+// before it MUST cycle (causing recurring decimals)
+func Fraction(num int, denom int) string {
+    repeat := map[int]int{} // keep track of index at which rem starts repeating for each rem
+    rem    := num
+    whole  := strconv.Itoa(rem/denom) + "."
+    frac   := ""
+    for i := 0; i < denom + 1; i++ { // max cycle for remainders <= denom
+        if rem == 0 { return frac }
+        rem  = rem % denom
+        if _, ok := repeat[rem]; !ok {
+            repeat[rem] = i
+        } else { // rem repeats => recurring at this rem, look up index at repeat[rem]
+            return whole + frac[:repeat[rem]] + "(" + frac[repeat[rem]:] + ")"
+        }
+        rem *= 10
+        frac += strconv.Itoa(rem/denom)
+    }
+    return whole + frac
+}
     
+func PointsInLine(x []int, y []int) int {
+    // slopeHash = {"num/denom": {idx1: [idx2,idx4,idx5]}, ...}, e.g. {"3/26": {0:[3,6,7]}, ...}
+    slopeHash := map[string]map[int][]int{}
+    for i := 0; i < len(x) - 1; i++ {
+        for j := i + 1; j < len(x); j++ {
+            ydiff := y[j] - y[i]
+            xdiff := x[j] - x[i]
+            gcd   := GCDRemainder(ydiff, xdiff)
+            if gcd > 1 {
+                ydiff /= gcd
+                xdiff /= gcd
+            }
+            hKey := strconv.Itoa(ydiff) + "/" + strconv.Itoa(xdiff)
+            if _, ok := slopeHash[hKey]; !ok    { slopeHash[hKey]    = map[int][]int{} }
+            if _, ok := slopeHash[hKey][i]; !ok { slopeHash[hKey][i] = []int{} }
+            slopeHash[hKey][i] = append(slopeHash[hKey][i], j)
+        }
+    }
+    maxPoints := 0
+    for _, hMap := range slopeHash {
+        for _, iArr := range hMap {
+            if len(iArr) > maxPoints {
+                // log.Printf("i: %d, j: %v\n", i, iArr)
+                maxPoints = len(iArr)
+            }
+        }
+    }
+    return maxPoints
+}
+
+func ValidSudoku(strs []string) bool {
+    strMap := map[string]int{".": 0, "1":1,"2":2,"3":3,"4":4,"5":5,"6":6,"7":7,"8":8,"9":9}
+    _ = strMap
+    board  := [][]int{}
+    // populate board
+    for i, str := range strs {
+        board = append(board, []int{})
+        for _, char := range strings.Split(str, "") {
+            board[i] = append(board[i], strMap[char])
+        }
+    }
+    // Check validity of board (rows, columns, sub-squares
+    n := len(strs)
+    for i := 0; i < n; i++ {
+        countMap := map[int]int{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0}
+        for j := 0; j < n; j++ { // check row
+            val  := board[i][j]
+            if val > 0 { countMap[val]++ }
+            if countMap[val] > 1 { return false } // invalid
+        }
+        countMap  = map[int]int{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0}
+        for j := 0; j < n; j++ { // check col
+            val  := board[j][i]
+            if val > 0 { countMap[val]++ }
+            if countMap[val] > 1 { return false } // invalid
+        }
+        countMap  = map[int]int{1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0}
+        for j := 0; j < n; j++ { // check subsquare
+            isub := 3 * (i/3) + j/3
+            jsub := 3 * (i%3) + j%3
+            val  := board[isub][jsub]
+            if val > 0 { countMap[val]++ }
+            if countMap[val] > 1 { return false } // invalid
+        }
+    }
+    return true
+}

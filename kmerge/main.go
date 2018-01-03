@@ -194,6 +194,24 @@ func testHashing() {
 
     strs := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
     log.Printf("[GroupAnagrams]: strs: %v, groups: %v\n", strs, lib.GroupAnagrams(strs))
+
+    log.Printf("[Fraction]: fraction %d/%d, str: %s\n", 23, 101, lib.Fraction(23, 101))
+
+    x := []int{0, 2, 3, 1, 2, 3, 4, 5, 6, 4, 5}
+    y := []int{0, 2, 3, 2, 4, 6, 8, 10, 12, 4, 5}
+    pts := lib.PointsInLine(x, y)
+    log.Printf("[PointsInLine]: x: %v\n", x)
+    log.Printf("[PointsInLine]: y: %v, numPoints: %d\n", y, pts)
+
+    a  = []int{1, 9, 3, 22, 10, 4, 20, 2, 23, 6, 5, 34, 24, 8, 25}
+    log.Printf("[TwoSum]: a: %v, target: %d, solutions: %v\n", a, 14, lib.TwoSum(a, 14))
+
+    strs = []string{
+        "53..7....", "6..195...", ".98....6.",
+        "8...6...3", "4..8.3..1", "7...2...6",
+        ".6....28.", "...419..5", "....8..79",
+    }
+    log.Printf("[ValidSudoku]: strs: %v, valid: %v\n", strs, lib.ValidSudoku(strs))
 }
 
 func mergeData() {
