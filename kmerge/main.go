@@ -212,6 +212,19 @@ func testHashing() {
         ".6....28.", "...419..5", "....8..79",
     }
     log.Printf("[ValidSudoku]: strs: %v, valid: %v\n", strs, lib.ValidSudoku(strs))
+
+    nodes := []lib.DeepCopyNode{}
+    for i := 0; i < 3; i++ {
+        nodes = append(nodes, lib.DeepCopyNode{Value: i})
+    }
+    nodes[0].Next = append(nodes[0].Next, &nodes[1])
+    nodes[0].Next = append(nodes[0].Next, &nodes[2])
+    nodes[1].Next = append(nodes[1].Next, &nodes[2])
+    nodes[1].Next = append(nodes[1].Next, &nodes[0])
+    log.Printf("[DeepCopyList]: nodes: %v, deepCopy: %v\n", nodes, lib.DeepCopyList(&nodes[0]))
+
+    str := "abcabdcbbedcba"
+    log.Printf("[LongestNonRepeatSubstring]: str: %s, maxLen: %d\n", str, lib.LongestNonRepeatSubstring(str))
 }
 
 func mergeData() {

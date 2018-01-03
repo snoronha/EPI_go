@@ -203,3 +203,87 @@ func ValidSudoku(strs []string) bool {
     }
     return true
 }
+
+type DeepCopyNode struct {
+    Value  int
+    Next   []*DeepCopyNode
+}
+
+type DeepCopyStack struct {
+    Nodes []*DeepCopyNode
+}
+
+func (this *DeepCopyStack) Push(x *DeepCopyNode)  {
+    this.Nodes = append(this.Nodes, x)
+}
+
+func (this *DeepCopyStack) Pop() *DeepCopyNode {
+    top := this.Top()
+    l := len(this.Nodes)
+    if l > 0 {
+        this.Nodes = this.Nodes[0:l-1]
+    }
+    return top
+}
+
+func (this *DeepCopyStack) Top() *DeepCopyNode {
+    if len(this.Nodes) == 0 { return nil; }
+    return this.Nodes[len(this.Nodes)-1]
+}
+
+func (this *DeepCopyStack) Empty() bool {
+    return len(this.Nodes) <= 0
+}
+
+// Build an allNodes map: {oldNodePtr: newNodePtr} without any links first
+// Need a stack AND an allNodes map to traverse the list (a graph traversal essentially)
+// Iterate over allNodes, and duplicate links from the oldList
+func DeepCopyList(head *DeepCopyNode) *DeepCopyNode {
+    allNodes := map[*DeepCopyNode]*DeepCopyNode{}
+    stack    := DeepCopyStack{}
+    stack.Push(head)
+    for ! stack.Empty() { // do a census of allNodes first (build links in 2nd pass)
+        curr := stack.Pop()
+        if _, ok := allNodes[curr]; !ok {
+            allNodes[curr] = &DeepCopyNode{Value: (*curr).Value}
+            for _, next := range (*curr).Next {
+                if _, okNext := allNodes[next]; !okNext { stack.Push(next) }
+            }
+        }
+    }
+    // Iterate over allNodes, and build links for the new node list (nodes pre-created as values in allNodes now)
+    for oldNode, newNode := range allNodes {
+        for _, oldNext := range (*oldNode).Next {
+            (*newNode).Next = append((*newNode).Next, allNodes[oldNext])
+        }
+    }
+    // log.Printf("ALLNODES: %v\n", allNodes)
+    return allNodes[head]
+}
+
+func LongestNonRepeatSubstring(str string) int {
+    if len(str) <= 0 { return 0 }
+    charHash := map[string]int{}
+    for _, char := range strings.Split(str, "") {
+        charHash[char] = 0
+    }
+    ptr1 := 0; ptr2 := 0
+    maxLen := 0
+    for ptr1 < len(str) && ptr2 < len(str) {
+        currChar := string(str[ptr2]) // add next char to current window
+        charHash[currChar]++
+        maxLen++
+        ptr2++
+        if charHash[currChar] >= 2 { // char already exists, move ptr1 past previous instance
+            for ptr1 < ptr2 && charHash[currChar] >= 2  {
+                charHash[string(str[ptr1])]--
+                maxLen--
+                ptr1++
+            }
+        }
+        if ptr2 - ptr1 > maxLen { maxLen = ptr2 - ptr1 }
+        // log.Printf("long: \"%s\" charHash: %v, ptr1: %d, ptr2: %d\n", str[ptr1:ptr2], charHash, ptr1, ptr2)
+    }
+    
+    return maxLen
+}
