@@ -38,7 +38,8 @@ func main() {
     // testArrays()
     // testStrings()
     // testStackQueue()
-    testHashing()
+    // testHashing()
+    testTrees()
     return
 
     if *generateDataPtr {
@@ -182,10 +183,6 @@ func testStackQueue() {
 }
 
 func testHashing() {
-    s := rand.NewSource(time.Now().UnixNano())
-    r := rand.New(s)
-    _  = r
-
     a := []int{1, 9, 3, 22, 10, 4, 20, 2, 23, 6, 5, 34, 24, 8, 25}
     log.Printf("[LongestConsecutiveSeq]: a: %v, longest: %d\n", a, lib.LongestConsecutiveSequence(a))
 
@@ -225,6 +222,66 @@ func testHashing() {
 
     str := "abcabdcbbedcba"
     log.Printf("[LongestNonRepeatSubstring]: str: %s, maxLen: %d\n", str, lib.LongestNonRepeatSubstring(str))
+}
+
+func testTrees() {
+    nodes := []lib.OrderNode{}
+    for i := 0; i < 4; i++ { nodes = append(nodes, lib.OrderNode{Value: i}) }
+    nodes[0].Right = &nodes[1]; nodes[1].Right = &nodes[2]; nodes[2].Right = &nodes[3]; 
+    log.Printf("[InorderTraversal]: nodes: %v, result: %v\n", nodes, lib.InorderTraversal(&nodes[0]))
+
+    nodes  = []lib.OrderNode{}
+    for i := 0; i < 6; i++ { nodes = append(nodes, lib.OrderNode{Value: i}) }
+    nodes[0].Left = &nodes[1]; nodes[0].Right = &nodes[2]
+    nodes[1].Left = &nodes[3];
+    nodes[2].Left = &nodes[4]; nodes[2].Right = &nodes[5]
+    log.Printf("[InorderTraversal]: nodes: %v, result: %v\n", nodes, lib.InorderTraversal(&nodes[0]))
+
+    result := []int{} // use nodes above
+    lib.InorderTraversalRecurse(&nodes[0], &result)
+    log.Printf("[InorderTraversalRecurse]: nodes: %v, result: %v\n", nodes, result)
+
+    result  = lib.PreorderTraversal(&nodes[0]) // use nodes above
+    log.Printf("[PrerderTraversalRecurse]: nodes: %v, result: %v\n", nodes, result)
+
+    result  = []int{} // use nodes above
+    lib.PreorderTraversalRecurse(&nodes[0], &result)
+    log.Printf("[PreorderTraversalRecurse]: nodes: %v, result: %v\n", nodes, result)
+
+    result  = lib.PostorderTraversal(&nodes[0]) // use nodes above
+    log.Printf("[PostrderTraversalRecurse]: nodes: %v, result: %v\n", nodes, result)
+
+    result  = []int{} // use nodes above
+    lib.PostorderTraversalRecurse(&nodes[0], &result)
+    log.Printf("[PostorderTraversalRecurse]: nodes: %v, result: %v\n", nodes, result)
+
+    nodes  = []lib.OrderNode{}
+    for i := 0; i < 16; i++ { nodes = append(nodes, lib.OrderNode{}) }
+    nodes[0].Value  = 314; nodes[0].Left  = &nodes[1];  nodes[0].Right  = &nodes[2]
+    nodes[1].Value  = 6;   nodes[1].Left  = &nodes[3];  nodes[1].Right  = &nodes[4]
+    nodes[2].Value  = 6;   nodes[2].Left  = &nodes[5];  nodes[2].Right  = &nodes[6]
+    nodes[3].Value  = 271; nodes[3].Left  = &nodes[7];  nodes[3].Right  = &nodes[8]
+    nodes[4].Value  = 561;                              nodes[4].Right  = &nodes[9]
+    nodes[5].Value  = 2;                                nodes[5].Right  = &nodes[10]
+    nodes[6].Value  = 271;                              nodes[6].Right  = &nodes[11]
+    nodes[7].Value  = 28;
+    nodes[8].Value  = 0;
+    nodes[9].Value  = 3;   nodes[9].Left  = &nodes[12];
+    nodes[10].Value = 1;   nodes[10].Left = &nodes[13]; nodes[10].Right = &nodes[14]
+    nodes[11].Value = 28;
+    nodes[12].Value = 17;
+    nodes[13].Value = 401;                              nodes[13].Right = &nodes[15]
+    nodes[14].Value = 257;
+    nodes[15].Value = 641;
+    result  = lib.InorderTraversal(&nodes[0]) // use nodes above
+    log.Printf("[InorderTraversalRecurse]: result: %v\n", result)
+
+    path := []lib.OrderNode{}
+    lib.FindPath(&nodes[2], 641, &path)
+    log.Printf("[FindPath]: path: %v\n", path)
+
+    lca := lib.LeastCommonAncestor(&nodes[0], &nodes[12], &nodes[8])
+    log.Printf("[LeastCommonAncestor]: LCA: %v\n", lca)
 }
 
 func mergeData() {
