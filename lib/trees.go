@@ -2,6 +2,7 @@ package lib
 
 import (
     _ "log"
+    "strconv"
 )
 
 type OrderNode struct { // binary tree
@@ -37,6 +38,14 @@ func (this *OrderStack) Empty() bool {
     return len(this.Nodes) <= 0
 }
 
+func (this *OrderStack) ToString() string {
+    str := ""
+    for _, node := range this.Nodes {
+        str += strconv.Itoa(node.Value) + ","
+    }
+    return str
+}
+
 func InorderTraversalRecurse(root *OrderNode, result *[]int) {
     if root == nil { return }
     InorderTraversalRecurse((*root).Left, result)
@@ -59,7 +68,7 @@ func PostorderTraversalRecurse(root *OrderNode, result *[]int) {
 }
 
 // Inorder traversal without recursion
-// Set curr = root. For curr node, if no children, append to traversal list.
+// Set curr = root. For curr node, if no children, append to result.
 // If children, push right (if exists), root, and left (if exists) on stack (processed in reverse order)
 // Mark root as processed to prevent repeated processing
 func InorderTraversal(root *OrderNode) []int {
@@ -146,13 +155,49 @@ func PostorderTraversal(root *OrderNode) []int {
     return result
 }
 
-func FindPath(root *OrderNode, val int, path *[]OrderNode) bool {
+/*
+func FindPath(root *OrderNode, target *OrderNode) []OrderNode {
+    result  := []OrderNode{}
+    processed := map[*OrderNode]bool{} // nodes as process when children on stack
+    stack     := OrderStack{}
+    stack.Push(root)
+    for ! stack.Empty() {
+        curr := stack.Pop()
+        if curr == target {
+            // reverse order stack nodes into an array and return
+            for ! stack.Empty() {
+                result = append(result, (*stack.Pop()))
+            }
+            return result
+        }
+        if _, ok := processed[curr]; !ok { // not processed
+            if (*curr).Left != nil || (*curr).Right != nil { // at least 1 child
+                stack.Push(curr)         // push back current node
+                if (*curr).Left != nil {
+                if (*curr).Left != nil { // process left children as far as possible
+                    if _, okl := processed[(*curr).Left]; !okl { stack.Push((*curr).Left)
+                    log.Printf("LEFT:  %s, curr: %d\n", stack.ToString(), (*curr).Value)
+                } else {
+                    stack.Push((*curr).Right)
+                    log.Printf("RIGHT: %s\n", stack.ToString())
+                }
+            } else {
+                processed[curr] = true // mark processed
+            }
+
+        }
+    }
+    return result // node not found, empty result
+}
+*/
+
+func FindPathRecurse(root *OrderNode, val int, path *[]OrderNode) bool {
     if root == nil { return false }
     *path = append(*path, *root)
     if (*root).Value == val { return true } // check if root.Value == val
     // Check if val is found in Left or Right subtrees
-    if ( (*root).Left != nil && FindPath((*root).Left, val, path)) ||
-        ( (*root).Right != nil && FindPath((*root).Right, val, path)) {
+    if ( (*root).Left != nil && FindPathRecurse((*root).Left, val, path)) ||
+        ( (*root).Right != nil && FindPathRecurse((*root).Right, val, path)) {
         return true
     }
     *path = (*path)[0:len(*path)-1] // Pop root if val nor present in subtree rooted at root
@@ -173,4 +218,75 @@ func LeastCommonAncestor(root *OrderNode, a *OrderNode, b *OrderNode) *OrderNode
     } else {
         return rightLCA
     }
+}
+
+func ConstructTreeInorderPreorder(pre []OrderNode, in []OrderNode) *OrderNode {
+    if len(pre) == 1 {
+        root := OrderNode{Value: pre[0].Value} // clone pre[0]
+        return &root
+    } else {
+        root := OrderNode{Value: pre[0].Value} // clone root is first node in preorder
+        inRootIdx := 0
+        for i, inNode := range in { // find root node in inorder, left => leftsubtree, right => rightsubstree
+            if inNode == pre[0] { inRootIdx = i }
+        }
+        if len(in[0:inRootIdx]) > 0 {
+            root.Left  = ConstructTreeInorderPreorder(pre[1:inRootIdx+1], in[0:inRootIdx])
+        }
+        if len(in[inRootIdx+1:]) > 0 {
+            root.Right = ConstructTreeInorderPreorder(pre[inRootIdx+1:], in[inRootIdx+1:])
+        }
+        return &root
+    }
+}
+
+func ConstructTreeInorderPostorder(post []OrderNode, in []OrderNode) *OrderNode {
+    if len(post) == 1 {
+        root := OrderNode{Value: post[0].Value} // clone post[last]
+        return &root
+    } else {
+        root := OrderNode{Value: post[len(post)-1].Value} // clone root is last node in postorder
+        inRootIdx := 0
+        for i, inNode := range in { // find root node in inorder, left => leftsubtree, right => rightsubstree
+            if inNode == post[len(post)-1] { inRootIdx = i } // CAUTION: post[last] != root (root is cloned)
+        }
+        if len(in[0:inRootIdx]) > 0 {
+            root.Left  = ConstructTreeInorderPostorder(post[0:inRootIdx], in[0:inRootIdx])
+        }
+        if len(in[inRootIdx:len(post)-1]) > 0 {
+            root.Right = ConstructTreeInorderPostorder(post[inRootIdx:len(post)-1], in[inRootIdx:len(post)-1])
+        }
+        return &root
+    }
+}
+
+type BalancedStatus struct {
+    Balanced bool
+    Height   int
+}
+
+// A tree is (1-)balanced when the difference in height between any two left/right subtrees is <= 1
+func CheckBalanced(root *OrderNode) BalancedStatus {
+    if root == nil {
+        return BalancedStatus{Balanced: true, Height: -1}
+    }
+    // recursively check whether left, right trees are balanced
+    leftResult := CheckBalanced((*root).Left)
+    if ! leftResult.Balanced {
+        return BalancedStatus{Balanced: false, Height: 0}
+    }
+    rightResult := CheckBalanced((*root).Right)
+    if ! rightResult.Balanced {
+        return BalancedStatus{Balanced: false, Height: 0}
+    }
+    // compute Balanced and new Height
+    isBalanced := false; height := 0
+    if leftResult.Height > rightResult.Height {
+        isBalanced = (leftResult.Height - rightResult.Height) <= 1
+        height     = leftResult.Height + 1
+    } else {
+        isBalanced = (rightResult.Height - leftResult.Height) <= 1
+        height     = rightResult.Height + 1
+    }
+    return BalancedStatus{Balanced: isBalanced, Height: height}
 }

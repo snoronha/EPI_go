@@ -277,11 +277,47 @@ func testTrees() {
     log.Printf("[InorderTraversalRecurse]: result: %v\n", result)
 
     path := []lib.OrderNode{}
-    lib.FindPath(&nodes[2], 641, &path)
-    log.Printf("[FindPath]: path: %v\n", path)
+    lib.FindPathRecurse(&nodes[0], 641, &path)
+    log.Printf("[FindPathRecurse]: path: %v\n", path)
+
+    // path  = lib.FindPath(&nodes[0], &nodes[15])
+    // log.Printf("[FindPath]: path: %v\n", path)
 
     lca := lib.LeastCommonAncestor(&nodes[0], &nodes[12], &nodes[8])
     log.Printf("[LeastCommonAncestor]: LCA: %v\n", lca)
+
+
+    n1 := []lib.OrderNode{}
+    for i := 0; i < 6; i++ { n1 = append(n1, lib.OrderNode{}) }
+    n1[0].Value = 0; n1[0].Left = &n1[1]; n1[0].Right = &n1[2]
+    n1[1].Value = 1;                      n1[1].Right = &n1[3]
+    n1[2].Value = 2; n1[2].Left = &n1[4]; n1[2].Right = &n1[5]
+    n1[3].Value = 3;
+    n1[4].Value = 4;
+    n1[5].Value = 5;
+    pre    := []lib.OrderNode{n1[0], n1[1], n1[3], n1[2], n1[4], n1[5]}
+    in     := []lib.OrderNode{n1[1], n1[3], n1[0], n1[4], n1[2], n1[5]}
+    post   := []lib.OrderNode{n1[3], n1[1], n1[4], n1[5], n1[2], n1[0]}
+    newPreIn  := lib.ConstructTreeInorderPreorder(pre, in)
+    newPostIn := lib.ConstructTreeInorderPostorder(post, in)
+    log.Printf("[ConstructInPreOrder]:  tree: %v, oldRoot: %v\n", newPreIn, n1[0])
+    log.Printf("[ConstructInPostOrder]: tree: %v, oldRoot: %v\n", newPostIn, n1[0])
+    log.Printf("[InorderTraversal]:        tree: %v\n", lib.InorderTraversal(newPreIn))
+    log.Printf("[InorderTraversal]:        tree: %v\n", lib.InorderTraversal(newPostIn))
+    log.Printf("[InorderTraversal]: ACTUAL tree: %v\n", lib.InorderTraversal(&n1[0]))
+
+
+    n2 := []lib.OrderNode{}
+    for i := 0; i < 15; i++ { n2 = append(n2, lib.OrderNode{Value: i}) }
+    n2[0].Left = &n2[1];  n2[0].Right = &n2[2]
+    n2[1].Left = &n2[3];  n2[1].Right = &n2[4]
+    n2[2].Left = &n2[5];  n2[2].Right = &n2[6]
+    n2[3].Left = &n2[7];  n2[3].Right = &n2[8]
+    n2[4].Left = &n2[9];  n2[4].Right = &n2[10] // comment out to test negative case
+    n2[5].Left = &n2[11]; n2[5].Right = &n2[12]
+    n2[7].Left = &n2[13]; n2[7].Right = &n2[14]
+    bStatus := lib.CheckBalanced(&n2[0])
+    log.Printf("[CheckBalanced]: bStatus: %v\n", bStatus)
 }
 
 func mergeData() {
