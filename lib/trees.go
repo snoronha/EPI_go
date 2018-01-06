@@ -290,3 +290,14 @@ func CheckBalanced(root *OrderNode) BalancedStatus {
     }
     return BalancedStatus{Balanced: isBalanced, Height: height}
 }
+
+func CheckSymmetric(root1 *OrderNode, root2 *OrderNode) bool {
+    if root1 == nil && root2 == nil {
+        return true
+    } else if root1 != nil && root2 != nil {
+        return (*root1).Value == (*root2).Value &&
+            CheckSymmetric((*root1).Left, (*root2).Right) &&
+            CheckSymmetric((*root1).Right, (*root2).Left)
+    }
+    return false // one subtree == nil && the other != nil
+}

@@ -4,52 +4,6 @@ import (
     _ "log"
 )
 
-// Use DP to keep track of LIS up until ith elem.
-// O(n^2) algorithm
-func LongestIncreasingSubsequenceDP(seq []int) int {
-    if len(seq) == 0 { return 0; }
-    if len(seq) == 1 { return 1; }
-    lisArr := make([]int, len(seq))
-    lisArr[0] = 1
-    // for curr elem (i), look back at each prev elem (j)
-    // check if prev elem (j) < curr elem (i), compute max(lisArr[j]) for 0 <= j < i
-    for i := 1; i < len(seq); i++ {
-        maxj := 0
-        for j := 0; j < i; j++ {
-            if seq[j] < seq[i] && lisArr[j] > maxj { // ith elem > jth elem
-                lisArr[i] = lisArr[j] + 1
-                maxj = lisArr[j]
-            }
-        }
-        if lisArr[i] == 0 { lisArr[i] = 1; } // smallest yet, not part of any LIS
-    }
-    lis := 0
-    for _, lisVal := range lisArr {
-        if lisVal > lis {
-            lis = lisVal
-        }
-    }
-    return lis
-}
-
-// Keep track on minSoFar, and maxProfitSoFar (max(currPrice - minSoFar))
-// Update each at each elem of the array
-func BuySell1Stock(seq []int) int {
-    if len(seq) == 0 { return 0; }
-    if len(seq) == 1 { return 0; }
-    minSoFar  := seq[0]
-    maxProfit := 0
-    for _, price := range seq {
-        if price < minSoFar {
-            minSoFar = price
-        }
-        if price - minSoFar > maxProfit {
-            maxProfit = price - minSoFar
-        }
-    }
-    return maxProfit
-}
-
 func DeleteArrayElement(seq []int, deleteVal int) []int {
     jump := 0
     for i, val := range seq {

@@ -39,7 +39,8 @@ func main() {
     // testStrings()
     // testStackQueue()
     // testHashing()
-    testTrees()
+    // testTrees()
+    testDynamicProgramming()
     return
 
     if *generateDataPtr {
@@ -94,15 +95,6 @@ func testArrays() {
     s := rand.NewSource(time.Now().UnixNano())
     r := rand.New(s)
 
-    a   := []int{}
-    for i := 1; i < 31; i++ { a = append(a, i); }
-    a    = lib.Shuffle(a)
-    lis := lib.LongestIncreasingSubsequenceDP(a) // compute LIS using DP
-    log.Printf("[LIS]: seq: %v, lis = %d\n", a, lis)
-
-    maxProfit := lib.BuySell1Stock(a)
-    log.Printf("[BuySell1]: seq: %v, maxprofit = %d\n", a, maxProfit)
-
     b  := []int{}
     for i := 1; i < 16; i++ { b = append(b, i); b = append(b, i+2); }
     b    = lib.Shuffle(b)
@@ -110,7 +102,7 @@ func testArrays() {
     lib.DeleteArrayElement(b, 10)
     log.Printf("[Delete]: after  %v\n", b)
 
-    a  = []int{}
+    a := []int{}
     for i := 3; i < 27; i += 3 { a = append(a, i); }
     b  = []int{}
     for i := 2; i < 9; i += 2 { b = append(b, i); }
@@ -318,6 +310,63 @@ func testTrees() {
     n2[7].Left = &n2[13]; n2[7].Right = &n2[14]
     bStatus := lib.CheckBalanced(&n2[0])
     log.Printf("[CheckBalanced]: bStatus: %v\n", bStatus)
+
+    n3 := []lib.OrderNode{}
+    for i := 0; i < 9; i++ { n3 = append(n3, lib.OrderNode{}) }
+    n3[0].Value = 0; n3[0].Left = &n3[1];  n3[0].Right = &n3[2]
+    n3[1].Value = 1;                       n3[1].Right = &n3[3]
+    n3[2].Value = 1; n3[2].Left = &n3[4]
+    n3[3].Value = 4; n3[3].Left = &n3[5];  n3[3].Right = &n3[6]
+    n3[4].Value = 4; n3[4].Left = &n3[7];  n3[4].Right = &n3[8]
+    n3[5].Value = 5; n3[6].Value = 6; n3[7].Value = 6; n3[8].Value = 5;
+    bSymm := lib.CheckSymmetric(n3[0].Left, n3[0].Right)
+    log.Printf("[CheckSymmetric]: bSymm: %v\n", bSymm)
+}
+
+func testDynamicProgramming() {
+    a   := []int{}
+    for i := 1; i < 31; i++ { a = append(a, i); }
+    a    = lib.Shuffle(a)
+    lis := lib.LongestIncreasingSubsequenceDP(a) // compute LIS using DP
+    log.Printf("[LIS]: seq: %v, lis = %d\n", a, lis)
+
+    a    = []int{}
+    for i := 1; i < 10; i++ { a = append(a, i); }
+    a    = lib.Shuffle(a)
+    a[5] = -a[5]; // a[9] = -a[9];
+    log.Printf("[MaxProductSubarray]: seq: %v, maxSubArray = %d\n", a, lib.MaxProductSubarray(a))
+
+    inp := "124312216"
+    log.Printf("[WaysToDecode]: seq: %s, numWays = %d\n", inp, lib.WaysToDecode(inp))
+
+    a    = []int{}
+    for i := 1; i < 31; i++ { a = append(a, i); }
+    a    = lib.Shuffle(a)
+    log.Printf("[BuySell1]: seq: %v, maxprofit = %d\n", a, lib.BuySell1Stock(a))
+
+
+    n1 := []lib.OrderNode{}
+    for i := 0; i < 16; i++ { n1 = append(n1, lib.OrderNode{}) }
+    n1[0].Value  = 10;  n1[0].Left  = &n1[1];  n1[0].Right  = &n1[2]
+    n1[1].Value  = 2;   n1[1].Left  = &n1[3];  n1[1].Right  = &n1[4]
+    n1[2].Value  = 10;                         n1[2].Right  = &n1[5]
+    n1[3].Value  = 20;
+    n1[4].Value  = 1;
+    n1[5].Value  = -25; n1[5].Left  = &n1[6];  n1[5].Right  = &n1[7]
+    n1[6].Value  = 3;
+    n1[7].Value  = 4;
+    sum  := 0
+    lib.TreeMaxSumPath(&n1[0], &sum)
+    log.Printf("[TreeMaxSumPath]: maxSum: %d\n", sum)
+
+    inp = "ababbbabbababa"
+    log.Printf("[MinPalindromicPartition]: numCuts: %d\n", lib.MinPalindromicPartion(inp))
+
+    M  := [][]int{[]int{1, 3, 2}, []int{4, 3, 1}, []int{5, 6, 1}}
+    log.Printf("[MinSumMatrixPath]: M: %v, minPath: %v\n", M, lib.MinSumMatrixPath(M))
+
+    a   = []int{1, 3, 5, 2, 0, 2, 6, 7, 6, 8, 9}
+    log.Printf("[MinJumps]: input: %v, numMinJumps: %d\n", a, lib.MinJumps(a))
 }
 
 func mergeData() {
