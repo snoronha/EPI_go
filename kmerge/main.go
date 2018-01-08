@@ -40,7 +40,8 @@ func main() {
     // testStackQueue()
     // testHashing()
     // testTrees()
-    testDynamicProgramming()
+    // testDynamicProgramming()
+    testGraphs()
     return
 
     if *generateDataPtr {
@@ -367,6 +368,38 @@ func testDynamicProgramming() {
 
     a   = []int{1, 3, 5, 2, 0, 2, 6, 7, 6, 8, 9}
     log.Printf("[MinJumps]: input: %v, numMinJumps: %d\n", a, lib.MinJumps(a))
+
+    a   = []int{2, 3, 1, 1, 1, 0, 0}
+    log.Printf("[JumpGame]: input: %v, win: %v\n", a, lib.JumpGame(a))
+
+    log.Printf("[StairsProblem]: n: %d, numWays: %d\n", 8, lib.StairsProblem(8))
+}
+
+func testGraphs() {
+    g1 := []lib.GraphNode{}
+    for i := 0; i < 7; i++ { g1 = append(g1, lib.GraphNode{Label: i}) }
+    g1[0].Nodes = []*lib.GraphNode{&g1[1], &g1[2], &g1[3]}
+    g1[1].Nodes = []*lib.GraphNode{&g1[0], &g1[2]}
+    g1[2].Nodes = []*lib.GraphNode{&g1[0], &g1[1], &g1[4], &g1[6]}
+    g1[3].Nodes = []*lib.GraphNode{&g1[0], &g1[4], &g1[5]}
+    g1[4].Nodes = []*lib.GraphNode{&g1[2], &g1[3], &g1[6]}
+    g1[5].Nodes = []*lib.GraphNode{&g1[3]}
+    g1[6].Nodes = []*lib.GraphNode{&g1[2], &g1[4]}
+    log.Printf("[DepthFirstSearch]: graph: %v, dfspath: %v\n", (&g1[0]).ToStringLabelsDFS(), lib.DepthFirstSearch(&g1[0]))
+    log.Printf("[BreadthFirstSearch]: bfspath: %v\n", (&g1[0]).ToStringLabelsBFS())
+
+    log.Printf("[ClonedGraph]: originalGraph: {%s}, clonedGraph: {%s}\n", (&g1[0]).ToStringLabelsDFS(), lib.CloneGraph(&g1[0]).ToStringLabelsDFS())
+
+    strBoard := []string{ "ABCE", "SFCS", "ADEE" }
+    wordTarget := "ABFSAB"
+    log.Printf("[WordSearch]: board: %v, target: %s, wordFound: %v\n", strBoard, wordTarget, lib.WordSearch(strBoard, wordTarget))
+
+    strBoard  = []string{
+        "XX0X000",
+        "00XX0X0",
+        "0X000X0",
+    }
+    log.Printf("[BlackShapes]: board: %v, numBlackShapes: %v\n", strBoard, lib.BlackShapes(strBoard))
 }
 
 func mergeData() {

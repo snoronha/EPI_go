@@ -218,3 +218,39 @@ func MinJumps(jmp []int) int {
     }
     return minJmps[n-1]
 }
+
+// Given a jump array, can user make it to the end?
+// For each i find the max j (j >=i ) that user can reach
+// If max j >= n - 1, user can make it, else not
+func JumpGame(jmp []int) bool {
+    n := len(jmp)
+    maxReach := make([]int, n)
+    maxReach[0] = jmp[0]
+    for i := 1; i < n; i++ {
+        if maxReach[i-1] >= i { // if ith elem is reachable
+            maxReach[i] = Max(i + jmp[i], maxReach[i-1])
+        } else { // ith elem NOT reachable
+            return false
+        }
+    }
+    return maxReach[n-1] >= n - 1
+}
+
+// Someone can climb 1 stair or 2 stairs at a time. How many WAYS can the person climb n stairs?
+// Turns out to be a Fibonacci sequence C(i) = C(i-1) + C(i-2), C(1) = 1, C(2) = 2
+func StairsProblem(n int) int {
+    // Can be optimized to use O(1) storage, but we use O(n) here
+    C := make([]int, n)
+    C[0] = 1; C[1] = 2
+    for i := 2; i < n; i++ {
+        C[i] = C[i-1] + C[i-2]
+    }
+    return C[n-1]
+}
+
+// Given bool literals {T, F} and binary operators {&, |, ^}
+// how many ways can order of operators be arranged to give final answer T?
+// e.g. T^F&T becomes T for ((T^F)&T) and (T^(F&T)), so numWays = 2
+func EvaluateExpressionToTrue(expr string) {
+    
+}
