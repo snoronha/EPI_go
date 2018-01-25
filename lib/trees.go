@@ -200,12 +200,12 @@ func FindPathRecurse(root *OrderNode, val int, path *[]OrderNode) bool {
         ( (*root).Right != nil && FindPathRecurse((*root).Right, val, path)) {
         return true
     }
-    *path = (*path)[0:len(*path)-1] // Pop root if val nor present in subtree rooted at root
+    *path = (*path)[0:len(*path)-1] // Pop root if val not present in subtree rooted at root
     return false
 }
 
 // find the LCA of nodes a, b with tree rooted at root
-// ALternative: use FindPath to find path to a, b
+// Alternative: use FindPath to find path to a, b
 // Then start at root (common ancestor), walk down both paths and find last node that is common
 func LeastCommonAncestor(root *OrderNode, a *OrderNode, b *OrderNode) *OrderNode {
     if root == nil { return nil }

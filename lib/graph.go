@@ -139,7 +139,7 @@ func DepthFirstSearch(startNode *GraphNode) []*GraphNode {
     return result
 }
 
-// DFS: non-recursive using a stack
+// BFS: non-recursive using a queue
 func BreadthFirstSearch(startNode *GraphNode) []*GraphNode {
     result  := []*GraphNode{}
     visited := map[*GraphNode]bool{} // nodes as process when children on stack
