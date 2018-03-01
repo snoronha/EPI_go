@@ -1,16 +1,18 @@
 // Java program for different tree traversals
 
+package com.lib;
+
 import com.lib.Node;
 import java.util.ArrayList;
  
-class BinaryTree {
-    Node root; // Root of Binary Tree
+public class BinaryTree {
+    public Node root; // Root of Binary Tree
  
-    BinaryTree() {
+    public BinaryTree() {
         root = null;
     }
 
-    void Inorder(Node node, ArrayList<Integer> path) {
+    public void Inorder(Node node, ArrayList<Integer> path) {
         if (node == null)
             return;
         Inorder(node.left, path);  // first recur on left child
@@ -19,7 +21,7 @@ class BinaryTree {
     }    
 
     // Given a binary tree, print nodes in postorder
-    void printPostorder(Node node) {
+    public void printPostorder(Node node) {
         if (node == null)
             return;
         printPostorder(node.left);  // first recur on left subtree
@@ -28,7 +30,7 @@ class BinaryTree {
     }
 
     // Given a binary tree, print its nodes in inorder
-    void printInorder(Node node) {
+    public void printInorder(Node node) {
         if (node == null)
             return;
         printInorder(node.left);  // first recur on left child
@@ -37,7 +39,7 @@ class BinaryTree {
     }
  
     // Given a binary tree, print its nodes in preorder
-    void printPreorder(Node node) {
+    public void printPreorder(Node node) {
         if (node == null)
             return;
         System.out.print(node.key + " "); // first print data of node
@@ -46,28 +48,10 @@ class BinaryTree {
     }
 
     // Wrappers over above recursive functions
-    void printPostorder()  { printPostorder(root); }
-    void printInorder()    { printInorder(root); }
-    void printPreorder()   { printPreorder(root); }
-    ArrayList<Integer> path = new ArrayList<>();
-    void Inorder()         { Inorder(root, path); }
- 
-    // Driver method
-    public static void main(String[] args) {
-        BinaryTree tree = new BinaryTree();
-        tree.root            = new Node(1);
-        tree.root.left       = new Node(2);
-        tree.root.right      = new Node(3);
-        tree.root.left.left  = new Node(4);
-        tree.root.left.right = new Node(5);
+    public void printPostorder()  { printPostorder(root); }
+    public void printInorder()    { printInorder(root); }
+    public void printPreorder()   { printPreorder(root); }
+    public ArrayList<Integer> path = new ArrayList<>();
+    public void Inorder()         { Inorder(root, path); }
 
-        System.out.println("Preorder traversal of binary tree is ");
-        tree.printPreorder();
- 
-        System.out.println("\nInorder traversal of binary tree is ");
-        tree.printInorder();
- 
-        System.out.println("\nPostorder traversal of binary tree is ");
-        tree.printPostorder();
-    }
 }

@@ -1,5 +1,8 @@
 # Compiled python files
 *.pyc
 
+# Compiled java files
+*.class
+
 # Compiled java classes 
 java/classes
