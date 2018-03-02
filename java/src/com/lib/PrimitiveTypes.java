@@ -1,4 +1,4 @@
-// Java program for different tree traversals
+// Java class for Primitive Types, Chapter 4 from EPI
 
 package com.lib;
 
@@ -39,5 +39,22 @@ public class PrimitiveTypes {
             x ^= bitMask;
         }
         return x;
+    }
+
+    public static boolean isPalindromeNumber(long x) {
+        if (x <= 0) {
+            return x == 0;
+        }
+        int numDigits = (int)(Math.floor(Math.log10(x))) + 1;
+        int msdMask = (int)Math.pow(10, numDigits - 1);
+        for (int i = 0; i < (numDigits / 2); ++i) {
+            if (x / msdMask != x % 10) { // compare current LSD and MSD
+                return false;
+            }
+            x %= msdMask; // remove MSD
+            x /= 10; // remove LSD
+            msdMask /= 100; // removed 2 digits, i.e. LSD and MSD
+        }
+        return true;
     }
 }

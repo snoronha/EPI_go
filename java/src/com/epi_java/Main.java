@@ -1,8 +1,15 @@
 package com.epi_java;
 
-import com.lib.*;
+import com.lib.util;
+import com.lib.ArraysEPI;
+import com.lib.BinaryTree;
+import com.lib.LinkedList;
+import com.lib.Node;
+import com.lib.PrimitiveTypes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
@@ -10,7 +17,8 @@ public class Main {
         testUtil();
         testLinkedList();
         testBinaryTree();
-        testPrimitiveTypes();
+        testPrimitiveTypes(); // EPI: Chapter 4
+        testArrays();         // EPI: Chapter 5
     }
 
     // Test Util class
@@ -78,5 +86,44 @@ public class Main {
 
         // test swapBits
         System.out.printf("swapBits of %d (i=%d, j=%d): %d\n", 23569, 0, 33, PrimitiveTypes.swapBits(23569, 0, 33));
+
+        // test isPalindromeNumber
+        System.out.printf("isPalindromeNumber of %d: %s\n", 23569, PrimitiveTypes.isPalindromeNumber(23569));
+        System.out.printf("isPalindromeNumber of %d: %s\n", 235696532, PrimitiveTypes.isPalindromeNumber(235696532));
+    }
+
+    public static void testArrays() {
+        // test dutchFlagPartition
+        List<ArraysEPI.Color> A = new ArrayList<ArraysEPI.Color>();
+        A.add(ArraysEPI.Color.BLUE); A.add(ArraysEPI.Color.WHITE); A.add(ArraysEPI.Color.RED);
+        A.add(ArraysEPI.Color.BLUE); A.add(ArraysEPI.Color.WHITE); A.add(ArraysEPI.Color.RED);
+        A.add(ArraysEPI.Color.WHITE); A.add(ArraysEPI.Color.RED); A.add(ArraysEPI.Color.RED);
+        ArraysEPI.dutchFlagPartition(1, A);
+        System.out.printf("dutchFlagPartition: %s\n", A.toString());
+
+        // test plusOne for unlimited precision number (represented as array)
+        List<Integer> B = new ArrayList<>(Arrays.asList(3, 2, 4, 4, 9, 9, 9));
+        System.out.printf("plusOne: %s\n", ArraysEPI.plusOne(B).toString());
+
+        // test arbitrary precision multiplication
+        List<Integer> C = new ArrayList<>(Arrays.asList(-3, 2, 4, 4, 9, 9, 9));
+        List<Integer> D = new ArrayList<>(Arrays.asList(4, 7, 0, 2, 1, 2, 3));
+        System.out.printf("multiply: %s * %s = %s\n", C.toString(), D.toString(), ArraysEPI.multiply(C, D).toString());
+
+        // test canReachEnd of List
+        List<Integer> E = new ArrayList<>(Arrays.asList(2, 4, 1, 1, 0, 2, 3));
+        System.out.printf("canReachEnd: %s, %s\n", E.toString(), ArraysEPI.canReachEnd(E));
+
+        // test deleteDuplicates from sorted list with dups
+        List<Integer> F = new ArrayList<>(Arrays.asList(1, 1, 2, 2, 2, 3, 5, 5, 6, 7, 7));
+        System.out.printf("deleteDuplicates: before: %s, index = %d, after: %s\n", F.toString(), ArraysEPI.deleteDuplicates(F), F.toString());
+
+        // test computeMaxProfit i.e. buy/sell stock once
+        List<Double> G = new ArrayList<Double>(Arrays.asList(310.0, 315.0, 275.0, 295.0, 260.0, 270.0, 290.0, 230.0, 255.0, 250.0));
+        System.out.printf("computeMaxProfit: %s, maxProfit = %.1f\n", G.toString(), ArraysEPI.computeMaxProfit(G));
+
+        // test buyAndSellStockTwice i.e. buy/sell stock twice
+        List<Integer> H = new ArrayList<Integer>(Arrays.asList(12, 11, 13, 9, 12, 8, 14, 13, 15));
+        System.out.printf("buyAndSellStockTwice: %s, maxProfit = %d\n", H.toString(), ArraysEPI.buyAndSellStockTwice(H));
     }
 }
