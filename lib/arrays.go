@@ -2,7 +2,39 @@ package lib
 
 import (
     _ "log"
+    "sort"
+    "strconv"
 )
+
+// add two arbitrary precision numbers
+func AddNumbers(a []int, b []int) []int {
+    la := len(a); lb := len(b)
+    l  := la
+    if lb > la {
+        l = lb
+    }
+    c := make([]int, l)
+    for i := 0; i < l; i++ {
+        c[l-1-i] = 0
+        if la-1-i >= 0 {
+            c[l-1-i] += a[la-1-i]
+        }
+        if lb-1-i >= 0 {
+            c[l-1-i] += b[lb-1-i]
+        }
+    }
+    for i := l-1; i > 0; i-- {
+        if c[i] >= 10 {
+            c[i]   -= 10  // handle carry
+            c[i-1] += 1
+        }
+    }
+    if c[0] >= 10 {
+        c[0] -= 10
+        c     = append([]int{1}, c...) // prepend 1 in MSB i.e. as new c[0]
+    }
+    return c
+}
 
 func DeleteArrayElement(seq []int, deleteVal int) []int {
     jump := 0
@@ -67,4 +99,83 @@ func FindDuplicates(seq []int) map[int]int {
         if v > 1 { dupMap[k] = v; }
     }
     return dupMap
+}
+
+// Rotate an matrix by 90 degrees in place with no extra space
+func RotateMatrix(matrix [][]int) [][]int {
+    N := len(matrix)
+    for i := 0; i < N / 2; i++ {
+        // Consider elements in group of 4 in current square
+        for  j := i; j < N - i - 1; j++ {
+            temp                := matrix[i][j]         // store current cell in temp variable
+            matrix[i][j]         = matrix[N-1-j][i]     // copy value from bottom-left to top
+            matrix[N-1-j][i]     = matrix[N-1-i][N-1-j] // copy value from bottom-right to bottom-left
+            matrix[N-1-i][N-1-j] = matrix[j][N-1-i]     // copy value from top-right to bottom-right
+            matrix[j][N-1-i]     = temp                 // assign temp to top-right
+        }
+    }
+    return matrix
+}
+
+func SpiralOrder(matrix [][]int) []int {
+    order := []int{}
+    N     := len(matrix)
+    i := 0; j := 0
+    for l := N-1; l > 0; l -= 2 {
+        for k := 0; k < l; k++ {
+            order = append(order, matrix[i][j]); j++; // go right
+        }
+        for k := 0; k < l; k++ {
+            order = append(order, matrix[i][j]); i++; // go down
+        }
+        for k := 0; k < l; k++ {
+            order = append(order, matrix[i][j]); j--; // go left
+        }
+        for k := 0; k < l; k++ {
+            order = append(order, matrix[i][j]); i--; // go up
+        }
+        i++; j++
+    }
+    if N % 2 == 1 { // add center element
+        order = append(order, matrix[i][j])
+    }
+    return order
+}
+
+// Largest number formable from numbers in an array
+// e.g. for [3, 30, 34, 5, 9], the largest formed number is 9534330
+// approach: sort array lexically (numbers treated as strings) and append
+// in example: ["9", "5", "34", "3", "30"]
+type byNumber []string // needed: string sort puts "30" before "3"
+
+func (s byNumber) Len() int { return len(s) }
+func (s byNumber) Swap(i, j int) { s[i], s[j] = s[j], s[i] }
+func (s byNumber) Less(i, j int) bool {
+    return s[i] + s[j] > s[j] + s[i] // this is key. Append both ways and check
+}
+
+func LargestNumber(arr []int) string {
+    result := ""
+    strArr := []string{}
+    for _, num := range arr {
+        strArr = append(strArr, strconv.Itoa(num))
+    }
+    // custom sort needed. Basic lexical sort has issues as detailed above
+    sort.Sort(byNumber(strArr))
+    for _, str := range strArr {
+        result += str
+    }
+    return result
+}
+
+// Fibonacci using arbitrary precision addition implemented above
+func Fibonacci(n int) []int {
+    prev1 := []int{1}; prev2 := []int{1}
+    curr  := []int{}
+    for i := 2; i < n; i++ {
+        curr  = AddNumbers(prev1, prev2)
+        prev2 = AddNumbers(prev1, []int{0})
+        prev1 = AddNumbers(curr, []int{0})
+    }
+    return curr
 }

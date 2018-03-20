@@ -38,3 +38,14 @@ func Min(a, b int) int {
         return b
     }
 }
+
+func MakeMatrix(N int) [][]int {
+    matrix := make([][]int, N)
+    for i := 0; i < N; i++ {
+        matrix[i] = make([]int, N)
+        for j := 0; j < N; j++ {
+            matrix[i][j] = i * N + j
+        }
+    }
+    return matrix
+}
