@@ -168,6 +168,50 @@ func LargestNumber(arr []int) string {
     return result
 }
 
+// Given n, return a Pascal Triangle e.g. for n = 5
+// [[1], [1, 1], [1, 2, 1], [1, 3, 3, 1], [1, 4, 6, 4, 1]
+func PascalTriangle(n int) [][]int {
+    tri   := make([][]int, n)
+    tri[0] = []int{1}
+    tri[1] = []int{1, 1}
+    for i := 2; i < n; i++ {
+        tri[i] = []int{1} // init new row
+        for j := 1; j < len(tri[i-1]); j++ {
+            tri[i] = append(tri[i], tri[i-1][j-1] + tri[i-1][j])
+        }
+        tri[i] = append(tri[i], 1)
+    }
+    return tri
+}
+
+// Given an array A of integers, find the maximum of j - i subjected to the constraint of A[i] <= A[j].
+// e.g. A : [3 5 4 2], output should be 2 for the pair (3, 4)
+// Strategy: LMin[i] holds the smallest elem to the left of arr[i] including arr[i]
+// RMax[j] holds the largest element to the right of arr[j] including arr[j]
+// Traverse LMin, RMax from left (i), right (j) respectively and find the first time LMin[i] < RMax[j]
+func MaxDistance(A []int) int {
+    N    := len(A)
+    LMin := make([]int, N)
+    RMax := make([]int, N)
+    LMin[0] = A[0]; RMax[N-1] = A[N-1]
+    for i := 1; i < N; i++ {
+        j := N - i - 1
+        LMin[i] = Min(A[i], LMin[i-1])
+        RMax[j] = Max(A[j], RMax[j+1])
+    }
+    // traverse with two pointers and find max(j-i) for LMin[i] < RMax[j]
+    i := 0; j := 0; maxDiff := -1
+    for i < N && j < N {
+        if (LMin[i] < RMax[j]) {
+            maxDiff = Max(maxDiff, j-i)
+            j++
+        } else {
+            i++
+        }
+    }
+    return maxDiff
+}
+
 // Fibonacci using arbitrary precision addition implemented above
 func Fibonacci(n int) []int {
     prev1 := []int{1}; prev2 := []int{1}

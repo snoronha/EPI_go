@@ -7,6 +7,11 @@ import com.lib.LinkedList;
 import com.lib.Node;
 import com.lib.PrimitiveTypes;
 
+import com.lib.ArraysLeetCode;
+import com.lib.LinkedListLeetCode;
+import com.lib.PrimitiveTypesLeetCode;
+import com.lib.StringsLeetCode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,11 +19,13 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        testUtil();
-        testLinkedList();
-        testBinaryTree();
-        testPrimitiveTypes(); // EPI: Chapter 4
-        testArrays();         // EPI: Chapter 5
+        // testUtil();
+        // testLinkedList();
+        // testBinaryTree();
+        // testPrimitiveTypes(); // EPI: Chapter 4
+        // testArrays();         // EPI: Chapter 5
+
+        testLeetCode();       // LeetCode top 150 interview problems
     }
 
     // Test Util class
@@ -125,5 +132,31 @@ public class Main {
         // test buyAndSellStockTwice i.e. buy/sell stock twice
         List<Integer> H = new ArrayList<Integer>(Arrays.asList(12, 11, 13, 9, 12, 8, 14, 13, 15));
         System.out.printf("buyAndSellStockTwice: %s, maxProfit = %d\n", H.toString(), ArraysEPI.buyAndSellStockTwice(H));
+    }
+
+    public static void testLeetCode() {
+        // test ArraysLeetCode.twoSum - see if two numbers in array add to target
+        List<Integer> A = new ArrayList<>(Arrays.asList(2, 7, 11, 15, 3, 6, 8));
+        System.out.printf("twoSum: %s\n", ArraysLeetCode.twoSum(A, 10).toString());
+
+        // test LinkedListLeetCode.addTwoNumbers - add numbers represented as reversed LLs
+        ArrayList<Integer> listB = new ArrayList<Integer>(Arrays.asList(7, 8, 1, 5));
+        LinkedListLeetCode B = new LinkedListLeetCode(listB);
+        ArrayList<Integer> listC = new ArrayList<Integer>(Arrays.asList(9, 6, 6, 4));
+        LinkedListLeetCode C = new LinkedListLeetCode(listC);
+        System.out.printf("List B: %s, List C: %s, sum: %s\n", B.toList(), C.toList(),
+                LinkedListLeetCode.addTwoNumbers(B, C).toList());
+
+        // compute longest substring
+        String s = "aaababcaa"; // "cabacdc";
+        System.out.printf("String: %s, MaxSubstring: %s\n", s, StringsLeetCode.longestSubstring(s));
+
+        // compute longest palindrome
+        s = "abacdffdcabz";
+        System.out.printf("String: %s, LongPalindrome: %s\n", s, StringsLeetCode.longestPalindrome(s));
+
+        // reverse integer
+        int num = -74563;
+        System.out.printf("int: %d, reverse: %d\n", num, PrimitiveTypesLeetCode.reverseInteger(num));
     }
 }
