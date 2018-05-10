@@ -25,4 +25,33 @@ public class PrimitiveTypesLeetCode {
         }
         return isNegative ? -rnum: rnum;
     }
+
+    public static int atoi(String s) {
+        boolean isNegative = false;
+        s = s.trim(); // trim white space
+        if (s.charAt(0) == '-') { // take care of negative
+            s = s.substring(1);
+            isNegative = true;
+        }
+        if (s.charAt(0) == '+') { // take care of positive
+            s = s.substring(1);
+        }
+        if (!Character.isDigit(s.charAt(0))) { // handle case where string starts with non-digit
+            return 0;
+        }
+        s = s.replaceAll("[^\\d]", ""); // remove non-numeric chars
+
+        // take care of overflow/underflow
+        int sval  = 0;
+        int pow10 = 1;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            sval  += Character.getNumericValue(s.charAt(i)) * pow10;
+            pow10 *= 10;
+        }
+        if (isNegative) {
+            return -sval;
+        } else {
+            return sval;
+        }
+    }
 }

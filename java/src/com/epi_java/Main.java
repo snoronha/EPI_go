@@ -10,6 +10,7 @@ import com.lib.PrimitiveTypes;
 import com.lib.ArraysLeetCode;
 import com.lib.LinkedListLeetCode;
 import com.lib.PrimitiveTypesLeetCode;
+import com.lib.RecursionLeetCode;
 import com.lib.StringsLeetCode;
 
 import java.util.ArrayList;
@@ -158,5 +159,38 @@ public class Main {
         // reverse integer
         int num = -74563;
         System.out.printf("int: %d, reverse: %d\n", num, PrimitiveTypesLeetCode.reverseInteger(num));
+
+        // atoi
+        s = "4193 with words";
+        System.out.printf("str: %s, atoi: %d\n", s, PrimitiveTypesLeetCode.atoi(s));
+
+        // regex match
+        s = "aaabbbdacca"; String p = "a*.*bdac*a";
+        System.out.printf("str: %s, p: %s, match: %s\n", s, p, StringsLeetCode.regexMatch(s, p));
+
+        // maximumWater
+        ArrayList<Integer> listD = new ArrayList<Integer>(Arrays.asList(5, 8, 3, 9, 4, 2));
+        System.out.printf("water: %s, maxWater: %s\n", listD.toString(), ArraysLeetCode.maximumWater(listD));
+
+        // Roman to int
+        s = "XLIX"; // "MCMXCIV";
+        System.out.printf("roman: %s, int: %d\n", s, StringsLeetCode.romanToInt(s));
+
+        // Longest common prefix
+        ArrayList<String> listE = new ArrayList<String>(Arrays.asList("flower","flow","flight"));
+        System.out.printf("list: %s, prefix: %s\n", listE, StringsLeetCode.longestCommonPrefix(listE));
+
+        // Letter combinations of phone number
+        s = "99"; ArrayList<String> combos = new ArrayList<String>();
+        System.out.printf("num: %s, combos: %s\n", s, RecursionLeetCode.phoneCombinations(s, combos));
+
+        // Matching parentheses
+        s = "([]){{}}";
+        System.out.printf("input: %s, valid: %s\n", s, StringsLeetCode.validParentheses(s));
+
+        // generate parentheses
+        ArrayList<String> listF = new ArrayList<String>();
+        StringsLeetCode.generateParentheses(listF,"", 0, 0, 4);
+        System.out.printf("num: %d, parentheses: %s\n", 4, listF);
     }
 }

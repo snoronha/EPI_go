@@ -32,4 +32,26 @@ public class ArraysLeetCode {
         return result;
     }
 
+    // Given walls of different integer height, compute max water between any two walls
+    // Outline: start with 0, n-1 as candidate (widest walls);
+    // Remove min(a[0], a[n-1]) from considered set i.e. either i++ or j--
+    public static List<Integer> maximumWater(List<Integer> A) {
+        List<Integer> result = new ArrayList<>(Arrays.asList(-1, -1, 0));
+        int i  = 0, j = A.size() - 1;
+        int maxWater = 0, water = 0;
+        while (i < j) {
+            water = Math.min(A.get(i), A.get(j)) * (j - i);
+            if (water > maxWater) {
+                maxWater = water;
+                result.set(0, i); result.set(1, j); result.set(2, maxWater);
+            }
+            if (A.get(i) < A.get(j)) {
+                i++;
+            } else {
+                j--;
+            }
+        }
+        return  result;
+    }
+
 }
