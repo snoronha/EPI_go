@@ -8,6 +8,8 @@ import com.lib.Node;
 import com.lib.PrimitiveTypes;
 
 import com.lib.ArraysLeetCode;
+import com.lib.BinaryTreeLeetCode;
+import com.lib.DPLeetCode;
 import com.lib.LinkedListLeetCode;
 import com.lib.PrimitiveTypesLeetCode;
 import com.lib.RecursionLeetCode;
@@ -68,10 +70,10 @@ public class Main {
 
     public static void testBinaryTree() {
         BinaryTree tree = new BinaryTree();
-        tree.root            = new Node(1);
-        tree.root.left       = new Node(2);
-        tree.root.right      = new Node(3);
-        tree.root.left.left  = new Node(4);
+        tree.root = new Node(1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
         tree.root.left.right = new Node(5);
 
         System.out.println("Preorder traversal of binary tree is ");
@@ -103,9 +105,15 @@ public class Main {
     public static void testArrays() {
         // test dutchFlagPartition
         List<ArraysEPI.Color> A = new ArrayList<ArraysEPI.Color>();
-        A.add(ArraysEPI.Color.BLUE); A.add(ArraysEPI.Color.WHITE); A.add(ArraysEPI.Color.RED);
-        A.add(ArraysEPI.Color.BLUE); A.add(ArraysEPI.Color.WHITE); A.add(ArraysEPI.Color.RED);
-        A.add(ArraysEPI.Color.WHITE); A.add(ArraysEPI.Color.RED); A.add(ArraysEPI.Color.RED);
+        A.add(ArraysEPI.Color.BLUE);
+        A.add(ArraysEPI.Color.WHITE);
+        A.add(ArraysEPI.Color.RED);
+        A.add(ArraysEPI.Color.BLUE);
+        A.add(ArraysEPI.Color.WHITE);
+        A.add(ArraysEPI.Color.RED);
+        A.add(ArraysEPI.Color.WHITE);
+        A.add(ArraysEPI.Color.RED);
+        A.add(ArraysEPI.Color.RED);
         ArraysEPI.dutchFlagPartition(1, A);
         System.out.printf("dutchFlagPartition: %s\n", A.toString());
 
@@ -137,7 +145,7 @@ public class Main {
 
     public static void testLeetCode() {
         // test ArraysLeetCode.twoSum - see if two numbers in array add to target
-        List<Integer> A = new ArrayList<>(Arrays.asList(2, 7, 11, 15, 3, 6, 8));
+        ArrayList<Integer> A = new ArrayList<>(Arrays.asList(2, 7, 11, 15, 3, 6, 8));
         System.out.printf("twoSum: %s\n", ArraysLeetCode.twoSum(A, 10).toString());
 
         // test LinkedListLeetCode.addTwoNumbers - add numbers represented as reversed LLs
@@ -165,7 +173,8 @@ public class Main {
         System.out.printf("str: %s, atoi: %d\n", s, PrimitiveTypesLeetCode.atoi(s));
 
         // regex match
-        s = "aaabbbdacca"; String p = "a*.*bdac*a";
+        s = "aaabbbdacca";
+        String p = "a*.*bdac*a";
         System.out.printf("str: %s, p: %s, match: %s\n", s, p, StringsLeetCode.regexMatch(s, p));
 
         // maximumWater
@@ -173,15 +182,16 @@ public class Main {
         System.out.printf("water: %s, maxWater: %s\n", listD.toString(), ArraysLeetCode.maximumWater(listD));
 
         // Roman to int
-        s = "XLIX"; // "MCMXCIV";
+        s = "XCIX"; // "MCMXCIV";
         System.out.printf("roman: %s, int: %d\n", s, StringsLeetCode.romanToInt(s));
 
         // Longest common prefix
-        ArrayList<String> listE = new ArrayList<String>(Arrays.asList("flower","flow","flight"));
+        ArrayList<String> listE = new ArrayList<String>(Arrays.asList("flower", "flow", "flight"));
         System.out.printf("list: %s, prefix: %s\n", listE, StringsLeetCode.longestCommonPrefix(listE));
 
         // Letter combinations of phone number
-        s = "99"; ArrayList<String> combos = new ArrayList<String>();
+        s = "99";
+        ArrayList<String> combos = new ArrayList<String>();
         System.out.printf("num: %s, combos: %s\n", s, RecursionLeetCode.phoneCombinations(s, combos));
 
         // Matching parentheses
@@ -190,7 +200,92 @@ public class Main {
 
         // generate parentheses
         ArrayList<String> listF = new ArrayList<String>();
-        StringsLeetCode.generateParentheses(listF,"", 0, 0, 4);
+        StringsLeetCode.generateParentheses(listF, "", 0, 0, 4);
         System.out.printf("num: %d, parentheses: %s\n", 4, listF);
+
+        // isValid Sudoku puzzle
+        int puzzle1[][] = {
+                {0,0,0,0,3,8,0,0,0},
+                {0,9,0,0,0,7,0,1,0},
+                {0,6,0,0,0,0,5,0,8},
+                {0,4,0,3,0,1,0,0,0},
+                {0,0,1,0,4,0,6,0,0},
+                {0,0,0,8,0,9,0,2,0},
+                {7,0,8,0,0,0,0,3,0},
+                {0,2,0,7,0,0,0,6,0},
+                {0,0,0,4,2,0,0,0,0}
+        };
+        System.out.printf("puzzle: %s, isValidSudoku: %s\n", Arrays.deepToString(puzzle1), ArraysLeetCode.isValidSudoku(puzzle1));
+        int [][] solved1 = ArraysLeetCode.solveSudoku(puzzle1);
+        for (int i = 0; i < solved1.length; i++) {
+            System.out.printf("%s\n", Arrays.toString(solved1[i]));
+        }
+
+        int[] D = new int[]{1, 2, 3, 3, 4, 5, 5, 5, 6, 6, 6, 6, 7};
+        System.out.printf("arr: %s, removedDups: %s\n", Arrays.toString(D), Arrays.toString(ArraysLeetCode.removeDuplicates(D)));
+
+        int[] E = new int[]{11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+        System.out.printf("arr: %s, pivot: %d\n", Arrays.toString(E), ArraysLeetCode.findPivot(E));
+
+        int[] F = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22};
+        System.out.printf("arr: %s, target: %d\n", Arrays.toString(F), ArraysLeetCode.findTarget(F, 10));
+
+        System.out.printf("arr: %s, searched target: %d\n", Arrays.toString(E), ArraysLeetCode.searchRotatedSorted(E, 3));
+
+        int[] G = new int[]{-1, 0, 1, 2, -1, -4};
+        System.out.printf("arr: %s, 3Sums: %s\n", Arrays.toString(G), ArraysLeetCode.threeSum(G).toString());
+
+        int rotMat[][] = {
+                {0,  1, 2, 3},
+                {4,  5, 6, 7},
+                {8,  9,10,11},
+                {12,13,14,15}
+        };
+        System.out.printf("arr: %s\nrot: %s\n", Arrays.deepToString(rotMat), Arrays.deepToString(ArraysLeetCode.rotateMatrix(rotMat)));
+
+        System.out.printf("n:5, numWays:%d\n", DPLeetCode.howManySteps(5));
+
+        int[] H = new int[]{2, 0, 2, 1, 1, 0, 1, 2, 0, 0, 2, 1, 1};
+        System.out.printf("arr: %s, partitioned: %s\n", Arrays.toString(H), Arrays.toString(ArraysLeetCode.dutchFlagPartition(H)));
+
+        ArrayList<Integer> I = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
+        ArrayList<ArrayList<Integer>> POWER = new ArrayList<ArrayList<Integer>>();
+        RecursionLeetCode.powerSet(I, POWER);
+        System.out.printf("arr: %s, power set: %s\n", I, POWER);
+
+        String[][] maze = new String[][]{
+                {"A","B","C","E"},
+                {"S","F","C","S"},
+                {"A","D","E","E"}
+        };
+        String word = "SECBFC";
+        System.out.printf("maze: %s, word: %s, found: %s\n", maze, word, ArraysLeetCode.wordSearch(maze, word));
+
+        int[][] MATRIX = new int[][]{{1,2,3,4},{5,6,7,8},{9,10,11,12}};
+        System.out.printf("matrix: %s\nspiral: %s\n", MATRIX, Arrays.toString(ArraysLeetCode.spiralOrder(MATRIX)));
+
+        // number of unique paths in a grid (DP)
+        System.out.printf("m x n: %d x %d, uniquePaths: %d\n", 7, 3, DPLeetCode.uniquePaths(7, 3));
+
+        // minimum window string
+        String S = "ADOBECODEBABZCNC", T = "ABC";
+        System.out.printf("S: %s, T: %s, minWindow: %s\n", S, T, StringsLeetCode.minimumWindowSubstring(S, T));
+
+        // Inorder and Preorder on a binary tree
+        BinaryTreeLeetCode BT1 = new BinaryTreeLeetCode();
+        BT1.root = new Node(4); BT1.root.left = new Node(2);
+        BT1.root.right = new Node(5); BT1.root.left.left = new Node(1);
+        BT1.root.left.right = new Node(3);
+        ArrayList<Integer> INpath = new ArrayList<Integer>();
+        BinaryTreeLeetCode.Inorder(BT1.root, INpath);
+        ArrayList<Integer> PREpath = new ArrayList<Integer>();
+        BinaryTreeLeetCode.Preorder(BT1.root, PREpath);
+        ArrayList<Integer> PREpathIter = BinaryTreeLeetCode.PreorderIterate(BT1.root);
+        ArrayList<Integer> INpathIter  = BinaryTreeLeetCode.InorderIterate(BT1.root);
+        System.out.printf("INpath: %s, PREpath: %s, PREpathIter: %s, INpathIter: %s\n", INpath, PREpath, PREpathIter, INpathIter);
+
+        // Check whether valid binary tree
+        System.out.printf("isValidTree: %s\n", BinaryTreeLeetCode.isValid(BT1.root));
     }
+
 }

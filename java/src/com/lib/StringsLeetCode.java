@@ -15,16 +15,16 @@ public class StringsLeetCode {
         String[] strArr = str.split("", -1);
         HashMap<String, Integer> hash = new HashMap<String, Integer>();
         int start = 0, end = 1, maxlen = 0;
-        String longStr  = "";
-        for ( end = 1; end < strArr.length; end++ ) {
-            if (hash.containsKey(strArr[end-1])) {
-                hash.put(strArr[end-1], hash.get(strArr[end-1]) + 1); // increment
+        String longStr = "";
+        for (end = 1; end < strArr.length; end++) {
+            if (hash.containsKey(strArr[end - 1])) {
+                hash.put(strArr[end - 1], hash.get(strArr[end - 1]) + 1); // increment
             } else {
-                hash.put(strArr[end-1], 1);
+                hash.put(strArr[end - 1], 1);
             }
-            if (hash.get(strArr[end-1]) > 1) {
+            if (hash.get(strArr[end - 1]) > 1) {
                 // Character at end -1 has appeared twice. Move start ptr till no duplicate characters occur
-                while (!strArr[start].equals(strArr[end-1])) {
+                while (!strArr[start].equals(strArr[end - 1])) {
                     hash.put(strArr[start], hash.get(strArr[start]) - 1); // decrement
                     start++;
                 }
@@ -89,7 +89,7 @@ public class StringsLeetCode {
             if (p.length() > 1) {
                 if (p.charAt(1) == '*') {
                     return regexMatch(s.substring(1), p.substring(2)) || regexMatch(s.substring(1), p) ||
-                        regexMatch(s, p.substring(2));
+                            regexMatch(s, p.substring(2));
                 } else {
                     return regexMatch(s.substring(1), p.substring(1));
                 }
@@ -104,43 +104,48 @@ public class StringsLeetCode {
     // I can occur before {V, X}, X can occur before {L, C}, C can occur before {D, M}
     public static int romanToInt(String roman) {
         HashMap<String, Integer> map = new HashMap<String, Integer>();
-        map.put("I", 1); map.put("V", 5); map.put("X", 10); map.put("L", 50);
-        map.put("C", 100); map.put("D", 500); map.put("M", 1000);
+        map.put("I", 1);
+        map.put("V", 5);
+        map.put("X", 10);
+        map.put("L", 50);
+        map.put("C", 100);
+        map.put("D", 500);
+        map.put("M", 1000);
         int intval = 0, i = 0;
         while (i < roman.length()) {
-            switch(roman.charAt(i)) {
+            switch (roman.charAt(i)) {
                 case 'I':
                     if (i < roman.length() - 1 &&
-                            (roman.charAt(i+1) == 'V' || roman.charAt(i+1) == 'X')) {
-                        intval += map.get(roman.substring(i+1, i+2)) - 1;
+                            (roman.charAt(i + 1) == 'V' || roman.charAt(i + 1) == 'X')) {
+                        intval += map.get(roman.substring(i + 1, i + 2)) - 1;
                         i++;
                     } else {
-                        intval += map.get(roman.substring(i, i+1));
+                        intval += map.get(roman.substring(i, i + 1));
                     }
                     break;
 
                 case 'X':
                     if (i < roman.length() - 1 &&
-                            (roman.charAt(i+1) == 'L' || roman.charAt(i+1) == 'C')) {
-                        intval += map.get(roman.substring(i+1, i+2)) - 10;
+                            (roman.charAt(i + 1) == 'L' || roman.charAt(i + 1) == 'C')) {
+                        intval += map.get(roman.substring(i + 1, i + 2)) - 10;
                         i++;
                     } else {
-                        intval += map.get(roman.substring(i, i+1));
+                        intval += map.get(roman.substring(i, i + 1));
                     }
                     break;
 
                 case 'C':
                     if (i < roman.length() - 1 &&
-                            (roman.charAt(i+1) == 'D' || roman.charAt(i+1) == 'M')) {
-                        intval += map.get(roman.substring(i+1, i+2)) - 100;
+                            (roman.charAt(i + 1) == 'D' || roman.charAt(i + 1) == 'M')) {
+                        intval += map.get(roman.substring(i + 1, i + 2)) - 100;
                         i++;
                     } else {
-                        intval += map.get(roman.substring(i, i+1));
+                        intval += map.get(roman.substring(i, i + 1));
                     }
                     break;
 
                 default:
-                    intval += map.get(roman.substring(i, i+1));
+                    intval += map.get(roman.substring(i, i + 1));
                     break;
 
             }
@@ -172,26 +177,26 @@ public class StringsLeetCode {
     // Valid parentheses: watch for "([)]" - this is invalid
     public static boolean validParentheses(String s) {
         Stack stack = new Stack<Character>();
-        for( int i = 0; i < s.length(); i++) {
+        for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            switch(c) {
+            switch (c) {
                 case '(':
                 case '[':
                 case '{':
                     stack.push(c);
                     break;
                 case ')':
-                    if ((char)stack.pop() != '(') {
+                    if ((char) stack.pop() != '(') {
                         return false;
                     }
                     break;
                 case ']':
-                    if ((char)stack.pop() != '[') {
+                    if ((char) stack.pop() != '[') {
                         return false;
                     }
                     break;
                 case '}':
-                    if ((char)stack.pop() != '{') {
+                    if ((char) stack.pop() != '{') {
                         return false;
                     }
                     break;
@@ -207,8 +212,44 @@ public class StringsLeetCode {
         }
 
         if (open < n)
-            generateParentheses(result, cur+"(", open+1, closed, n);
+            generateParentheses(result, cur + "(", open + 1, closed, n);
         if (closed < open)
-            generateParentheses(result, cur+")", open, closed+1, n);
+            generateParentheses(result, cur + ")", open, closed + 1, n);
     }
+
+    // Minimum Window Substring: find the shortest length string that contains
+    // all the characters in a target string T.
+    // e.g. S = "ADOBECODEBANC", T = "ABC" outputs "BANC"
+    // Logic: move start endPtr till at least one instance of all characters are in window
+    // move startPtr to find minWindow with all chars. Once one character is excluded move endPtr
+    // again till all chars appear. Keep track of shortest window with all in
+    public static String minimumWindowSubstring(String S, String T) {
+        String minStr = "";
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        for (String c : T.split("")) map.put(c, 0); // build hashmap of chars in T
+        int startPtr = 0, endPtr = 0;
+        int mapCount = 0; // number of unique chars in window
+        while (endPtr < S.length()) {
+            // "ADOBECODEBACNC"
+            String chEnd = S.substring(endPtr, endPtr + 1);
+            if (map.containsKey(chEnd)) {
+                map.put(chEnd, map.get(chEnd) + 1);
+                if (map.get(chEnd) == 1) mapCount++;
+            }
+            while (mapCount == T.length()) {
+                if (minStr.isEmpty() || endPtr - startPtr < minStr.length()) { // set minStr if len < len(minStr)
+                    minStr = S.substring(startPtr, endPtr + 1);
+                }
+                String chStart = S.substring(startPtr, startPtr + 1);
+                if (map.containsKey(chStart)) {
+                    map.put(chStart, map.get(chStart) - 1);
+                    if (map.get(chStart) == 0) mapCount--;
+                }
+                startPtr++;
+            }
+            endPtr++;
+        }
+        return minStr;
+    }
+
 }

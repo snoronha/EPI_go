@@ -40,4 +40,35 @@ public class RecursionLeetCode {
             return phoneCombinations(num.substring(1), newList);
         }
     }
+
+    // Generate the power set i.e. all subsets of a set
+    // There are 2^n subsets for an n-element set
+    public static void powerSet(ArrayList<Integer> A, ArrayList<ArrayList<Integer>> L) {
+        if (A.size() == 0) {
+            L.add(A);
+        } else if (A.size() == 1) {
+            L.add(A); L.add(new ArrayList<Integer>());
+        } else {
+            int head = A.get(0);
+            A.remove(0);
+            powerSet(A, L);
+            ArrayList<ArrayList<Integer>> addToL = new ArrayList<ArrayList<Integer>>();
+            for (ArrayList<Integer> l : L) {
+                ArrayList<Integer> clone = (ArrayList<Integer>)l.clone();
+                clone.add(head);
+                addToL.add(clone);
+            }
+            for (ArrayList<Integer> l : addToL) {
+                L.add(l);
+            }
+        }
+    }
+
+    // Decode ways: "226" -> ["BZ", "VF", "BBF"]
+    public static int decodeWays(String S, ArrayList<String> L) {
+        int numWays = 0;
+
+        return numWays;
+    }
+
 }
