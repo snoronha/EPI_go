@@ -1,9 +1,10 @@
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import javax.swing.JFrame;
 
-public class Game extends JFrame {
+public class Game extends JFrame
+{
     public static void main(String[] args) {
-        // write your code here
+        // Create a Game
         Game g = new Game();
         g.setSize(800,800);
         g.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -21,30 +22,32 @@ public class Game extends JFrame {
         setSize(810, 510); //Set the size of the JFrame
         setTitle("The Maze of History!"); //Put Title on top of JFrame
         setResizable(false);
+        pack();
         setVisible(true);
 
         // Body Panel
-        BodyPanel bp = new BodyPanel();
+        BodyPanel bodyPanel = new BodyPanel();
 
         // Control Panel
-        ControlPanel cp = new ControlPanel(bp.bodyPanel);
+        ControlPanel controlPanel = new ControlPanel(bodyPanel);
 
         // Welcome Card
-        WelcomeCard wc = new WelcomeCard();
+        WelcomeCard welcomeCard = new WelcomeCard();
 
         // Instruction Card
-        InstructionCard ic = new InstructionCard();
+        InstructionCard instructionCard = new InstructionCard();
 
         // Game Card
-        GameCard gc = new GameCard();
+        GameCard gameCard = new GameCard();
 
         // Add welcomeCard, instructionCard and gameCard to bodyPanel
-        bp.bodyPanel.add(wc.welcomeCard, WELCOME_CARD);
-        bp.bodyPanel.add(ic.instructionCard, INSTRUCTIONS_CARD);
-        bp.bodyPanel.add(gc.gameCard, GAME_CARD);
+        bodyPanel.add(welcomeCard, WELCOME_CARD);
+        bodyPanel.add(instructionCard, INSTRUCTIONS_CARD);
+        bodyPanel.add(gameCard, GAME_CARD);
 
         // Add controlPanel and bodyPanel to JFrame
-        add(cp.controlPanel, BorderLayout.NORTH);
-        add(bp.bodyPanel, BorderLayout.CENTER);
+        add(controlPanel, BorderLayout.NORTH);
+        add(bodyPanel, BorderLayout.CENTER);
     }
+
 }

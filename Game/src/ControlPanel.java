@@ -3,23 +3,23 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ControlPanel implements ActionListener
+public class ControlPanel extends JPanel implements ActionListener
 {
     final String INSTRUCTIONS_CARD = "Instructions";
     final String GAME_CARD         = "Game";
-    public JPanel controlPanel, bodyPanel;
+    public JPanel bodyPanel;
     JButton instructionButton,gameButton;
     public ControlPanel(JPanel bdyPanel)
     {
         bodyPanel = bdyPanel;
-        controlPanel= new JPanel(new FlowLayout());
-        controlPanel.setBackground(Color.WHITE);
+        setLayout(new FlowLayout());
+        setBackground(Color.WHITE);
         instructionButton = new JButton("Instructions");
         gameButton = new JButton("Game");
         instructionButton.addActionListener(this);
         gameButton.addActionListener(this);
-        controlPanel.add(instructionButton);
-        controlPanel.add(gameButton);
+        add(instructionButton);
+        add(gameButton);
     }
 
     public void actionPerformed(ActionEvent e) {

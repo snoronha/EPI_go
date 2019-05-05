@@ -1,16 +1,12 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.CardLayout;
+import java.awt.Color;
+import javax.swing.JPanel;
 
-public class BodyPanel
+public class BodyPanel extends JPanel
 {
-    public JPanel bodyPanel;
     public BodyPanel()
     {
-        bodyPanel= new JPanel(new CardLayout());
-        bodyPanel.setBackground(Color.CYAN);
+        setLayout(new CardLayout());
+        setBackground(Color.CYAN);
     }
-
-
 }
