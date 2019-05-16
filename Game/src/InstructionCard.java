@@ -12,11 +12,12 @@ public class InstructionCard extends JPanel
             "These questions will be related to the eqyptian pharoahs.\n\n"+
             "If you get a question right, you keep going. If not, you go back to the last ckeckpoint (the previous question).\n\n"+
             "Use the 4 arrow keys to navigate through.\n\n"+
-            "Enjoy!",10,50);
+            "Enjoy! By the way, you can type anything you want in this screen!",10,50);
     public InstructionCard()
     {
         setLayout(new BorderLayout());                  //setting layout and background of instructions
-        setBackground(Color.RED);
+        setBackground(Color.BLUE);
+        setVisible(true);
         add(instructions);
     }
 

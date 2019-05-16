@@ -1,3 +1,4 @@
+//class sets location of ball on screen and makes sure it stays within the lines/boundaries
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -60,7 +61,7 @@ public class GameCard extends JPanel
         super.paintComponent(g);
         g.drawImage(image, 0, 0, 750,800,this);
         g.setColor(Color.RED);
-        g.fillOval(ballX,ballY, 30,30);
+        g.fillOval(ballX,ballY, 20,20);
     }
 
     /*
@@ -84,7 +85,7 @@ public class GameCard extends JPanel
         }
     }
     */
-    
+
 
     // Implement a KeyEventDispatcher that listens to KeyEvents
     private class MyKeyDispatcher implements KeyEventDispatcher
@@ -146,7 +147,7 @@ public class GameCard extends JPanel
         while (reader.hasNext())
         {
             String str = reader.nextLine();
-            //System.out.println(str);
+            System.out.println(str);
         }
     }
 

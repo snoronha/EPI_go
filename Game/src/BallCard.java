@@ -1,3 +1,4 @@
+//class allows movement of a ball around the screen
 import java.awt.event.*;
 import java.awt.Graphics;
 import java.awt.Color;
@@ -10,7 +11,7 @@ public class BallCard extends JPanel implements ActionListener
     private Timer timer;
     private int x = 0;
     private int y = 0;
-    private int radius = 20;
+    private int radius = 10;
     private int dx = 5;
     private int dy = 5;
     public BallCard()
@@ -27,7 +28,7 @@ public class BallCard extends JPanel implements ActionListener
     public void paintComponent(Graphics g)
     {
         g.drawOval(10,10, 30,30);
-        /*
+
         super.paintComponent(g);
         g.setColor(Color.BLUE);
         if(x < radius)
@@ -49,6 +50,6 @@ public class BallCard extends JPanel implements ActionListener
         x += dx;
         y += dy;
         g.fillOval(x - radius, y - radius, radius*2, radius*2);
-        */
+
     }
 }

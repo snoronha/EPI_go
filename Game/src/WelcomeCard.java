@@ -1,3 +1,4 @@
+// class welcomes user to game
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import java.awt.BorderLayout;
@@ -10,6 +11,7 @@ public class WelcomeCard extends JPanel
     {
         setLayout(new BorderLayout());
         setBackground(Color.RED);
+        setVisible(true);
         add(welcomeText);
     }
 }

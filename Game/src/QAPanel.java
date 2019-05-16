@@ -1,3 +1,4 @@
+//class deals with the questions used in my game and implements radio buttons to do so
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -54,8 +55,6 @@ public class QAPanel extends JPanel implements ActionListener
     }
     public void displayQA()
     {
-
-        System.out.println("hi");
         radioButton1.setText("Success!");
     }
 }
