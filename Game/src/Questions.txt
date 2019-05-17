@@ -1,42 +1,100 @@
 Q:How many pharoahs were there in ancient Egypt?
 A:90
-A:170
-A:320
-A:650
+B:170|correct
+C:320
+D:650
 Q:Who was the first pharoah?
 A:King Tut
-A:Khufu
-A:Ramses
-A:Narmer
+B:Khufu
+C:Ramses|correct
+D:Mufasa
 Q:Who was the last pharoah?
-A:Cleopatra
+A:Cleopatra|correct
+B:Mekh
+C:Noli
+D:Gemti
 Q:Who was the richest pharoah?
-A:Amenhotep
+A:Censitanum
+B:Amenhotep|correct
+C:Loog
+D:Subul
 Q:Who was the most famous pharoah?
-A:King Tut
+A:Selim
+B:Jesus
+C:Buddha
+D:King Tut|correct
 Q:Who is regarded as the greatest or most powerful pharoah?
-A:Ramesses
+A:Bono
+B:Ramesses|correct
+C:Gogi
+D:Tesnit
 Q:Who was the youngest pharoah?
-A:Pepy the second
+A:Pepy the second|correct
+B:Pepy the third
+C:Golire
+D:None of the above
 Q:At what age did Pepy the second become a pharoah?
-A:Six
+A:10
+B:6|correct
+C:3
+D:1
 Q:What image did the crown of the pharoahs have on it?
-A:Cobra Goddess
-Q:What food the the pharoahs love?
-A:Garlic
+A:Cobra Goddess|correct
+B:Sun
+C:Rain
+D:Moon
+Q:What did the pharoahs use to give flavor to food?
+A:Coriander
+B:Cumin
+C:Garlic|correct
+D:Parsley
 Q:What could pharoahs do that no one else could?
-A:Make offerings to the gods
+A:Kill anyone they want
+B:Sacrifice themselves
+C:Earn money
+D:Make offerings to the gods|correct
 Q:Was ancient Egypt monotheistic or polytheistic?
-A:Polytheistic
+A:Monotheistic
+B:Polytheistic|correct
+C:Neither
+D:Both
 Q:At what age did King Tut die?
-A:19
+A:80
+B:23
+C:19|correct
+D:42
 Q:How long did the oldest pharoah live?
-A:73 years
+A:50 years
+B:105 years
+C:92 years
+D:73 years|correct
 Q:About how long did the pharoahs last?
-A:2000 years
+A:2000 years|correct
+B:1500 years
+C:4000 years
+C:300 years
 Q:Who were the pharoahs taken over by?
-A:Persians
-Q:In what language did the pharoahs write in?
-A:Hieroglyphics
+A:Greeks
+B:Romans
+C:Persians|correct
+D:Russians
+Q:In what language did the pharoahs write/speak in?
+A:English
+B:Sign language
+C:None,we don't know how they communicated
+D:Hieroglyphics|correct
 Q:Who was the oldest living pharoah?
-A:Mekh
+A:Khufu
+B:Gantos
+C:Mekh|correct
+D:Lesti
+Q:Which pharoah was the promoter of eqyptian trade?
+A:Numbikan
+B:Canaan
+C:Molsen
+D:Hatshepsut|correct
+Q:Which pharoah was the patron of the arts?
+A:Senusret|correct
+B:Halimet
+C:Conmi
+D:Zagru

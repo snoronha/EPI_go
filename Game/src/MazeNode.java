@@ -1,3 +1,4 @@
+//class that sets the edges for the maze
 public class MazeNode
 {
     boolean[] edges;
@@ -19,6 +20,11 @@ public class MazeNode
     }
     public void setDown(boolean down)
     {
+
+        edges[1] = down;
+    }
+    public void set(boolean right, boolean down){
+        edges[0] = right;
         edges[1] = down;
     }
     public boolean getRight()

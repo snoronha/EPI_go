@@ -53,8 +53,9 @@ public class QAPanel extends JPanel implements ActionListener
             }
         }
     }
-    public void displayQA()
+    public void displayQA(QA qa)
     {
-        radioButton1.setText("Success!");
+        qaText.setText(qa.question);
+        // radioButton1.setText(qa.question);
     }
 }
