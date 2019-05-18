@@ -26,11 +26,9 @@ public class Game extends JFrame
 
         // Body Panel
         bodyPanel = new BodyPanel();
-        System.out.println("BodyPanel = "+ bodyPanel);
 
         // Control Panel
         controlPanel = new ControlPanel(bodyPanel);
-        System.out.println("ControlPanel = "+ controlPanel);
 
         // Add controlPanel and bodyPanel to JFrame
         add(controlPanel, BorderLayout.NORTH);

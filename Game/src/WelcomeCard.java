@@ -6,7 +6,7 @@ import java.awt.Color;
 
 public class WelcomeCard extends JPanel
 {
-    JTextArea welcomeText = new JTextArea("Welcome to the game!" ,10,50);
+    JTextArea welcomeText = new JTextArea("Welcome to the Maze of History!" ,10,50);
     public WelcomeCard()
     {
         setLayout(new BorderLayout());

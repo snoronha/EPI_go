@@ -25,6 +25,7 @@ public class GameCard extends JPanel
     private int height = 800;
     private int xOffset = 100;
     private int yOffset = 100;
+    private int currentQAIndex;
 
     public GameCard()
     {
@@ -70,8 +71,12 @@ public class GameCard extends JPanel
         maze[2][4].set(true, false);
         maze[3][4].set(true, false);
         maze[4][4].set(true, false);
-
-
+        maze[1][3].set(true, false);
+        maze[2][2].set(false, true);
+        maze[5][4].set(true, false);
+        maze[3][3].set(false, true);
+        maze[5][5].set(false, true);
+        maze[2][3].set(true,false);
         final String QA_Panel = "QAPanel";
         qaPanel = new QAPanel();
         add(qaPanel, BorderLayout.SOUTH);
@@ -109,48 +114,55 @@ public class GameCard extends JPanel
             {
                 if (e.getKeyCode() == 37) // left arrow
                 {
-                    qaPanel.displayQA(QAs[0]);
-                    if(!(maze[balli][ballj].getDown()))
+                    if(!maze[balli][ballj].getDown()) // no down edge at (i, j)
                     {
+
                         balli--;
                         repaint();
                     }
-                    else
+                    else // down edge exists at (i, j)
                     {
-
+                        qaPanel.displayQA(getCurrentQA());
+                        incrementQAIndex();
                     }
                 }
                 if (e.getKeyCode() == 38) // up arrow
                 {
-                    if(!(maze[balli][ballj].getRight()))
+                    if(!maze[balli][ballj].getRight())
                     {
                         ballj--;
                         repaint();
                     }
-                    else
+                    else   //right edge exists at (i,j)
                     {
-
+                        qaPanel.displayQA(getCurrentQA());
+                        incrementQAIndex();
                     }
                 }
                 if (e.getKeyCode() == 39)  // right arrow
                 {
-                    if(!(maze[balli+1][ballj].getDown()))
+                    if(!maze[balli+1][ballj].getDown())
                     {
-                        System.out.println("got it balli = " + balli);
                         balli++;
                         repaint();
                     }
-                    else
+                    else   //down edge exists at (i+1,j)
                     {
-                        System.out.println("not it");
+                        qaPanel.displayQA(getCurrentQA());
+                        incrementQAIndex();
                     }
                 }
                 else if (e.getKeyCode() == 40) // down arrow
                 {
-                    if(!(maze[balli][ballj+1].getRight()))
+                    if(!maze[balli][ballj+1].getRight())
                     {
                         ballj++;
                         repaint();
+                    }
+                    else  //right edge exists at (i,j+1)
+                    {
+                        qaPanel.displayQA(getCurrentQA());
+                        incrementQAIndex();
                     }
                 }
                 if(balli < 0)
@@ -211,6 +223,17 @@ public class GameCard extends JPanel
             }
             counter++;
         }
-        QAs[10].print();
+        QAs[qNum] = new QA(q, a0, a1, a2, a3, 0);
+        qNum++;
+    }
+    public QA getCurrentQA()
+    {
+        return QAs[currentQAIndex];
+    }
+    public int incrementQAIndex()
+    {
+        currentQAIndex++;
+        currentQAIndex = currentQAIndex % NUM_QUESTIONS;
+        return currentQAIndex;
     }
 }

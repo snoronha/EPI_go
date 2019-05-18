@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 public class QAPanel extends JPanel implements ActionListener
 {
     JTextArea qaText = new JTextArea("Welcome to the qaPanel!" ,5,30);
-    JRadioButton radioButton1, radioButton2, radioButton3, radioButton4;
+    JRadioButton radioButton0, radioButton1, radioButton2, radioButton3;
     ButtonGroup buttonGroup;
     JButton submitButton;
     public QAPanel()
@@ -19,19 +19,22 @@ public class QAPanel extends JPanel implements ActionListener
         add(qaText, BorderLayout.NORTH);
 
         JPanel answers = new JPanel();
-        radioButton1 = new JRadioButton("Option 1");
-        radioButton2 = new JRadioButton("Option 2");
-        radioButton3 = new JRadioButton("Option 3");
-        radioButton4 = new JRadioButton("Option 4");
+        radioButton0 = new JRadioButton("Option 1");
+        radioButton1 = new JRadioButton("Option 2");
+        radioButton2 = new JRadioButton("Option 3");
+        radioButton3 = new JRadioButton("Option 4");
+
         buttonGroup = new ButtonGroup();
+        buttonGroup.add(radioButton0);
         buttonGroup.add(radioButton1);
         buttonGroup.add(radioButton2);
         buttonGroup.add(radioButton3);
-        buttonGroup.add(radioButton4);
+
+        answers.add(radioButton0);
         answers.add(radioButton1);
         answers.add(radioButton2);
         answers.add(radioButton3);
-        answers.add(radioButton4);
+
         add(answers, BorderLayout.CENTER);
 
 
@@ -56,6 +59,10 @@ public class QAPanel extends JPanel implements ActionListener
     public void displayQA(QA qa)
     {
         qaText.setText(qa.question);
-        // radioButton1.setText(qa.question);
+        radioButton0.setText(qa.answers[0]);
+        radioButton1.setText(qa.answers[1]);
+        radioButton2.setText(qa.answers[2]);
+        radioButton3.setText(qa.answers[3]);
+
     }
 }
