@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 
 public class QAPanel extends JPanel implements ActionListener
 {
+    GameCard gameCard;
+    int isCorrect;
     JTextArea qaText = new JTextArea("Welcome to the qaPanel!" ,5,30);
     JRadioButton radioButton0, radioButton1, radioButton2, radioButton3;
     ButtonGroup buttonGroup;
     JButton submitButton;
-    public QAPanel()
+    public QAPanel(GameCard gc)
     {
         setLayout(new BorderLayout());
         setBackground(Color.GREEN);
@@ -19,10 +21,10 @@ public class QAPanel extends JPanel implements ActionListener
         add(qaText, BorderLayout.NORTH);
 
         JPanel answers = new JPanel();
-        radioButton0 = new JRadioButton("Option 1");
-        radioButton1 = new JRadioButton("Option 2");
-        radioButton2 = new JRadioButton("Option 3");
-        radioButton3 = new JRadioButton("Option 4");
+        radioButton0 = new JRadioButton("Option 1"); radioButton0.setActionCommand("0");
+        radioButton1 = new JRadioButton("Option 2"); radioButton1.setActionCommand("1");
+        radioButton2 = new JRadioButton("Option 3"); radioButton2.setActionCommand("2");
+        radioButton3 = new JRadioButton("Option 4"); radioButton3.setActionCommand("3");
 
         buttonGroup = new ButtonGroup();
         buttonGroup.add(radioButton0);
@@ -37,18 +39,39 @@ public class QAPanel extends JPanel implements ActionListener
 
         add(answers, BorderLayout.CENTER);
 
-
         // add submit button
         submitButton = new JButton("Submit");
         submitButton.addActionListener(this);                     //make sure player can click on buttons
-        add(submitButton, BorderLayout.SOUTH);                      //adding buttons
+        add(submitButton, BorderLayout.SOUTH);                     //adding buttons
+
+        // reference to gameCard
+        gameCard = gc;
     }
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == submitButton)
         {
-            if ( buttonGroup.getSelection() != null) {
-                System.out.print("Submit pressed: selected = " + buttonGroup.getSelection());
+            if ( buttonGroup.getSelection() != null)
+            {
+                String selection = buttonGroup.getSelection().getActionCommand(); // "0", "1", "2" or "3"
+                if(selection.equals("0") && isCorrect == 0)
+                {
+                    gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                }
+                if(selection.equals("1") && isCorrect == 1 )
+                {
+                    gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                }
+                if(selection.equals("2") && isCorrect == 2)
+                {
+                    gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                }
+                if(selection.equals("3") && isCorrect == 3)
+                {
+                    gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                }
+
+                System.out.print("Submit pressed: selected = " + buttonGroup.getSelection().getActionCommand());
             }
             else
             {
@@ -58,11 +81,12 @@ public class QAPanel extends JPanel implements ActionListener
     }
     public void displayQA(QA qa)
     {
+        isCorrect = qa.isCorrect;
         qaText.setText(qa.question);
         radioButton0.setText(qa.answers[0]);
         radioButton1.setText(qa.answers[1]);
         radioButton2.setText(qa.answers[2]);
         radioButton3.setText(qa.answers[3]);
-
+        buttonGroup.clearSelection();
     }
 }

@@ -2,35 +2,50 @@
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.BorderLayout;
 import java.awt.KeyboardFocusManager;
 import java.awt.Color;
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 public class GameCard extends JPanel
 {
-    public MazeNode[][] maze;
+    public MazeEdge[][] maze;
     public static QA[] QAs;
     private final int NUM_QUESTIONS = 20;
     private QAPanel qaPanel;
     final static int ROWS = 6;
     final static int COLS = 6;
-    private int balli = 0;
-    private int ballj = 0;
-    private int width = 800;
-    private int height = 800;
-    private int xOffset = 100;
-    private int yOffset = 100;
+    private int balli     = 0;
+    private int ballj     = 0;
+    private int WIDTH     = 800;
+    private int HEIGHT    = 800;
+    private int xOffset   = 90;
+    private int yOffset   = 90;
     private int currentQAIndex;
+    public int edgeI = -1;
+    public int edgeJ = -1;
+    public boolean isEdgeDown = false;
+    private int score;
+
+    // sounds
+    // String testSoundName = "src/test.wav";
+    // Clip testSound;
+
 
     public GameCard()
     {
         setLayout(new BorderLayout());
-        setSize(width,height);
+        setSize(WIDTH,HEIGHT);
         setBackground(Color.WHITE);
 
         // Manager to listen to keyboard events
@@ -41,45 +56,73 @@ public class GameCard extends JPanel
         QAs = new QA[NUM_QUESTIONS];
 
         // create maze
-        maze = new MazeNode[ROWS][COLS];
+        maze = new MazeEdge[ROWS][COLS];
         for(int i = 0; i < ROWS; i++)
         {
             for(int j = 0; j < COLS; j++)
             {
-                // maze[i][j] = new MazeNode(i % 2 == 0, i % 2 == 0);
-                maze[i][j] = new MazeNode(false, false);
+                maze[i][j] = new MazeEdge(false, false);
             }
         }
-        maze[0][0].set(true, true);
+        maze[0][0].set(true, false);
         maze[1][0].set(true, false);
         maze[2][0].set(true, false);
         maze[3][0].set(true, false);
         maze[4][0].set(true, false);
-        maze[0][2].set(false, true);
-        maze[0][3].set(false, true);
         maze[5][0].set(false, true);
-        maze[5][1].set(false, true);
+
+        maze[0][1].set(false, true);
         maze[1][1].set(true, false);
         maze[2][1].set(true, false);
         maze[3][1].set(true, true);
         maze[4][1].set(false, true);
+        maze[5][1].set(false, true);
+
+        maze[0][2].set(false, true);
+        maze[1][2].set(true, false);
+        maze[2][2].set(false, true);
         maze[4][2].set(false, true);
-        maze[4][3].set(true, false);
         maze[5][2].set(false, true);
-        maze[0][4].set(true, false);
-        maze[1][4].set(true, false);
+
+        maze[0][3].set(false, true);
+        maze[1][3].set(true, false);
+        maze[2][3].set(true,false);
+        maze[3][3].set(false, true);
+        maze[4][3].set(true, true);
+        maze[5][3].set(false, true);
+
+
+        maze[0][4].set(true, true);
+        maze[1][4].set(true, true);
         maze[2][4].set(true, false);
         maze[3][4].set(true, false);
         maze[4][4].set(true, false);
-        maze[1][3].set(true, false);
-        maze[2][2].set(false, true);
-        maze[5][4].set(true, false);
-        maze[3][3].set(false, true);
-        maze[5][5].set(false, true);
-        maze[2][3].set(true,false);
+        //maze[5][4].set(false, true);
+
+        maze[0][5].set(true, false);
+        maze[1][5].set(true, false);
+        maze[2][5].set(true, false);
+        maze[3][5].set(true, false);
+        maze[4][5].set(true, false);
+
+
         final String QA_Panel = "QAPanel";
-        qaPanel = new QAPanel();
+        qaPanel = new QAPanel(this);
         add(qaPanel, BorderLayout.SOUTH);
+
+        // sounds
+        /*
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(testSoundName).getAbsoluteFile());
+            testSound = AudioSystem.getClip();
+            testSound.open(audioInputStream);
+            testSound.start();
+        }
+        catch(Exception e)
+        {
+            System.out.println("exception = " + e);
+        }
+        */
     }
     public void paintComponent(Graphics g)
     {
@@ -87,6 +130,21 @@ public class GameCard extends JPanel
         drawMaze(g);
         g.setColor(Color.RED);
         g.fillOval(balli * xOffset + 3*xOffset/2, ballj * yOffset + 3*yOffset/2, 20,20);
+
+        // paintScore()
+        paintScore(g);
+    }
+    public void paintScore(Graphics g)
+    {
+        g.setColor(Color.BLACK);
+        g.fillRect(WIDTH - 129, 21, 108, 83);
+        g.setColor(Color.GREEN);
+        g.fillRect(WIDTH - 125, 25, 100, 75);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 48));
+        g.setColor(Color.BLACK);
+        g.drawString(String.valueOf(score), WIDTH - 110, 70);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
+        g.drawString("Score", WIDTH - 100, 20);
     }
 
     public void drawMaze(Graphics g) {
@@ -116,14 +174,17 @@ public class GameCard extends JPanel
                 {
                     if(!maze[balli][ballj].getDown()) // no down edge at (i, j)
                     {
-
                         balli--;
+                        score += 10;
                         repaint();
                     }
                     else // down edge exists at (i, j)
                     {
                         qaPanel.displayQA(getCurrentQA());
                         incrementQAIndex();
+                        isEdgeDown = true;
+                        edgeI = balli;
+                        edgeJ = ballj;
                     }
                 }
                 if (e.getKeyCode() == 38) // up arrow
@@ -131,12 +192,16 @@ public class GameCard extends JPanel
                     if(!maze[balli][ballj].getRight())
                     {
                         ballj--;
+                        score += 10;
                         repaint();
                     }
                     else   //right edge exists at (i,j)
                     {
                         qaPanel.displayQA(getCurrentQA());
                         incrementQAIndex();
+                        isEdgeDown = false;
+                        edgeI = balli;
+                        edgeJ = ballj;
                     }
                 }
                 if (e.getKeyCode() == 39)  // right arrow
@@ -144,12 +209,16 @@ public class GameCard extends JPanel
                     if(!maze[balli+1][ballj].getDown())
                     {
                         balli++;
+                        score += 10;
                         repaint();
                     }
                     else   //down edge exists at (i+1,j)
                     {
                         qaPanel.displayQA(getCurrentQA());
                         incrementQAIndex();
+                        isEdgeDown = true;
+                        edgeI = balli+1;
+                        edgeJ = ballj;
                     }
                 }
                 else if (e.getKeyCode() == 40) // down arrow
@@ -157,12 +226,16 @@ public class GameCard extends JPanel
                     if(!maze[balli][ballj+1].getRight())
                     {
                         ballj++;
+                        score += 10;
                         repaint();
                     }
                     else  //right edge exists at (i,j+1)
                     {
                         qaPanel.displayQA(getCurrentQA());
                         incrementQAIndex();
+                        isEdgeDown = false;
+                        edgeI = balli;
+                        edgeJ = ballj+1;
                     }
                 }
                 if(balli < 0)
@@ -177,10 +250,14 @@ public class GameCard extends JPanel
                 {
                     balli = ROWS-2;
                 }
-                if(ballj > COLS-3)
+                if(ballj > COLS-2)
                 {
-                    ballj = COLS-3;
+                    ballj = COLS-2;
                 }
+            }
+            if(isGameComplete())     //game complete code here
+            {
+                System.out.println("complete");
             }
             return false;
         }
@@ -200,7 +277,7 @@ public class GameCard extends JPanel
             {
                 if (counter > 0) // create previous QA and append to QAs
                 {
-                    QAs[qNum] = new QA(q, a0, a1, a2, a3, 0);
+                    QAs[qNum] = new QA(q, a0, a1, a2, a3);
                     qNum++;
                 }
                 q = str;
@@ -223,7 +300,7 @@ public class GameCard extends JPanel
             }
             counter++;
         }
-        QAs[qNum] = new QA(q, a0, a1, a2, a3, 0);
+        QAs[qNum] = new QA(q, a0, a1, a2, a3);
         qNum++;
     }
     public QA getCurrentQA()
@@ -235,5 +312,29 @@ public class GameCard extends JPanel
         currentQAIndex++;
         currentQAIndex = currentQAIndex % NUM_QUESTIONS;
         return currentQAIndex;
+    }
+    public void removeMazeEdge(int i, int j, boolean isDown)
+    {
+        if(isDown)
+        {
+            maze[i][j].setDown(false);
+        }
+        else
+        {
+            maze[i][j].setRight(false);
+        }
+        score += 40;
+        repaint();
+    }
+    public boolean isGameComplete()
+    {
+        if(balli == ROWS - 2 && ballj == COLS - 2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
