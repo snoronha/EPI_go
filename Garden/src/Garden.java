@@ -1,11 +1,13 @@
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Graphics;
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 
-public class Garden extends JPanel implements MouseListener, KeyListener {
+public class Garden extends JPanel implements MouseListener, KeyListener
+{
 
     private boolean mouseClicked, isWater, isSun;
     private int WIDTH = 1000;
@@ -13,9 +15,9 @@ public class Garden extends JPanel implements MouseListener, KeyListener {
 
     public Garden()
     {
-	mouseClicked = false;
-	isWater      = false;
-	isSun        = false;
+        mouseClicked = false;
+        isWater      = false;
+        isSun        = false;
         setBackgroundColor(Color.PINK);
         addMouseListener(this);
         addKeyListener(this);
@@ -23,58 +25,63 @@ public class Garden extends JPanel implements MouseListener, KeyListener {
         requestFocusInWindow();
     }
 
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
-	if (isWater)
+        if (isWater)
         {
-	    paintWater(g);
-	}
-	else if (isSun)
+            paintWater(g);
+        }
+        else if (isSun)
         {
-	    paintSun(g);
-	}
-	else
+            paintSun(g);
+        }
+        else
         {
-	    setBackgroundColor(Color.PINK);
-	}
+            setBackgroundColor(Color.PINK);
+        }
     }
 
     @Override
-    public void keyReleased(KeyEvent evt) {
+    public void keyReleased(KeyEvent evt)
+    {
         System.out.println("Key released: " + evt.getKeyCode());
     }
 
-    public void keyTyped(KeyEvent evt) {
+    public void keyTyped(KeyEvent evt)
+    {
         System.out.println("Key typed: " + evt.getKeyCode());
     }
 
     @Override
-    public void keyPressed(KeyEvent evt) {
+    public void keyPressed(KeyEvent evt)
+    {
         System.out.println("Key pressed: " + evt.getKeyCode());
         if (evt.getKeyCode() == 53) // "%" character
         {
-            if (mouseClicked) {
-		isWater      = true;
-		isSun        = false;
+            if (mouseClicked)
+            {
+                isWater      = true;
+                isSun        = false;
                 mouseClicked = false;
-		repaint();
+		        repaint();
             }
         }
         else if (evt.getKeyCode() == 38) // "up arrow" character
         {
             if(mouseClicked)
             {
-		isWater      = false;
-		isSun        = true;
-		mouseClicked = false;
-		repaint();
+                isWater      = false;
+                isSun        = true;
+                mouseClicked = false;
+                repaint();
             }
         }
         else if (evt.getKeyCode() == 32) // "space bar" character
         {
-	    isWater      = false;
-	    isSun        = false;
-	    mouseClicked = false;
+            isWater      = false;
+            isSun        = false;
+            mouseClicked = false;
             repaint();
         }
     }
@@ -101,14 +108,14 @@ public class Garden extends JPanel implements MouseListener, KeyListener {
 
     public void paintWater(Graphics g)
     {
-	setBackgroundColor(Color.GREEN);
+	    setBackgroundColor(Color.GREEN);
     }
     
     public void paintSun(Graphics g)
     {
-	setBackgroundColor(Color.GREEN);
+	    setBackgroundColor(Color.GREEN);
         g.setColor(Color.YELLOW);
-	g.fillOval(0, 0, 50, 50);
+	    g.fillOval(0, 0, 50, 50);
         for(int i = 0;i < WIDTH; i += 200)
         {
             for(int j = 0;j < HEIGHT; j += 200)
