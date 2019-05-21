@@ -50,7 +50,7 @@ public class Garden extends JPanel implements MouseListener, KeyListener {
                 paintSun();
             }
         }
-        else if (evt.getKeyCode() == 49) // "space bar" character
+        else if (evt.getKeyCode() == 32) // "space bar" character
         {
             setBackgroundColor(Color.PINK);
             repaint();
@@ -58,7 +58,7 @@ public class Garden extends JPanel implements MouseListener, KeyListener {
         }
     }
 
-    
+
     @Override
     public void mouseClicked(MouseEvent evt)
     {
@@ -89,6 +89,7 @@ public class Garden extends JPanel implements MouseListener, KeyListener {
                 g.fillOval(i, j, 50, 50);
             }
         }
+        repaint();
     }
 
 }

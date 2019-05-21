@@ -27,8 +27,8 @@
       <file leaf-file-name="Garden.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Garden.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="359">
-              <caret line="60" column="4" selection-start-line="60" selection-start-column="4" selection-end-line="60" selection-end-column="4" />
+            <state relative-caret-position="186">
+              <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#727#728#0" expanded="true" />
@@ -70,7 +70,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="311" />
+    <option name="x" value="64" />
     <option name="y" value="23" />
     <option name="width" value="1338" />
     <option name="height" value="877" />
@@ -144,7 +144,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="8" y="23" width="1338" height="877" extended-state="0" />
+    <frame x="64" y="23" width="1338" height="877" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
@@ -287,8 +287,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Garden.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="60" column="4" selection-start-line="60" selection-start-column="4" selection-end-line="60" selection-end-column="4" />
+        <state relative-caret-position="186">
+          <caret line="74" lean-forward="true" selection-start-line="74" selection-end-line="74" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#727#728#0" expanded="true" />
