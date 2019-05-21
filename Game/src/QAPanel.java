@@ -54,24 +54,55 @@ public class QAPanel extends JPanel implements ActionListener
             if ( buttonGroup.getSelection() != null)
             {
                 String selection = buttonGroup.getSelection().getActionCommand(); // "0", "1", "2" or "3"
-                if(selection.equals("0") && isCorrect == 0)
+                if(selection.equals("0"))
                 {
-                    gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                    if (isCorrect == 0)
+                    {
+                        gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                        gameCard.bodyPanel.game.showModal(true);
+                    }
+                    else
+                    {
+                        gameCard.bodyPanel.game.showModal(false);
+                    }
                 }
-                if(selection.equals("1") && isCorrect == 1 )
+                if(selection.equals("1"))
                 {
-                    gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                    if (isCorrect == 1)
+                    {
+                        gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                        gameCard.bodyPanel.game.showModal(true);
+                    }
+                    else
+                    {
+                        gameCard.bodyPanel.game.showModal(false);
+                    }
                 }
-                if(selection.equals("2") && isCorrect == 2)
+                if(selection.equals("2"))
                 {
-                    gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                    if (isCorrect == 2)
+                    {
+                        gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                        gameCard.bodyPanel.game.showModal(true);
+                    }
+                    else
+                    {
+                        gameCard.bodyPanel.game.showModal(false);
+                    }
                 }
-                if(selection.equals("3") && isCorrect == 3)
+                if(selection.equals("3"))
                 {
-                    gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                    if (isCorrect == 3)
+                    {
+                        gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
+                        gameCard.bodyPanel.game.showModal(true);
+                    }
+                    else
+                    {
+                        gameCard.bodyPanel.game.showModal(false);
+                    }
                 }
-
-                System.out.print("Submit pressed: selected = " + buttonGroup.getSelection().getActionCommand());
+                gameCard.isAnswering = false;
             }
             else
             {

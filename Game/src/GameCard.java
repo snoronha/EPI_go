@@ -1,21 +1,12 @@
 //class sets location of ball on screen and makes sure it stays within the lines/boundaries
+//it also makes the actual maze, paints the score on the screen and tests if the game is complete
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Scanner;
 
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.BorderLayout;
-import java.awt.KeyboardFocusManager;
-import java.awt.Color;
-import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyEvent;
-import java.io.File;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 public class GameCard extends JPanel
 {
@@ -36,16 +27,20 @@ public class GameCard extends JPanel
     public int edgeJ = -1;
     public boolean isEdgeDown = false;
     private int score;
+    public boolean isAnswering = false;
+    public BodyPanel bodyPanel;
+    public ResultsCard resultsCard;
 
     // sounds
     // String testSoundName = "src/test.wav";
     // Clip testSound;
 
 
-    public GameCard()
+    public GameCard(BodyPanel bdyPanel)
     {
+        bodyPanel = bdyPanel;
         setLayout(new BorderLayout());
-        setSize(WIDTH,HEIGHT);
+        setSize(WIDTH, HEIGHT);
         setBackground(Color.WHITE);
 
         // Manager to listen to keyboard events
@@ -81,6 +76,7 @@ public class GameCard extends JPanel
         maze[0][2].set(false, true);
         maze[1][2].set(true, false);
         maze[2][2].set(false, true);
+        maze[3][2].set(false, true);
         maze[4][2].set(false, true);
         maze[5][2].set(false, true);
 
@@ -97,7 +93,6 @@ public class GameCard extends JPanel
         maze[2][4].set(true, false);
         maze[3][4].set(true, false);
         maze[4][4].set(true, false);
-        //maze[5][4].set(false, true);
 
         maze[0][5].set(true, false);
         maze[1][5].set(true, false);
@@ -110,20 +105,8 @@ public class GameCard extends JPanel
         qaPanel = new QAPanel(this);
         add(qaPanel, BorderLayout.SOUTH);
 
-        // sounds
-        /*
-        try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(testSoundName).getAbsoluteFile());
-            testSound = AudioSystem.getClip();
-            testSound.open(audioInputStream);
-            testSound.start();
-        }
-        catch(Exception e)
-        {
-            System.out.println("exception = " + e);
-        }
-        */
     }
+
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
@@ -134,6 +117,7 @@ public class GameCard extends JPanel
         // paintScore()
         paintScore(g);
     }
+
     public void paintScore(Graphics g)
     {
         g.setColor(Color.BLACK);
@@ -160,108 +144,100 @@ public class GameCard extends JPanel
         }
     }
 
-
     // Implement a KeyEventDispatcher that listens to KeyEvents
     private class MyKeyDispatcher implements KeyEventDispatcher
     {
-
         @Override
         public boolean dispatchKeyEvent(KeyEvent e) {
-            // KeyEvent.KEY_PRESSED, KeyEvent.KEY_RELEASED or KeyEvent.KEY_TYPED?
-            if (e.getID() == KeyEvent.KEY_PRESSED)
-            {
-                if (e.getKeyCode() == 37) // left arrow
-                {
-                    if(!maze[balli][ballj].getDown()) // no down edge at (i, j)
+            if (!isAnswering) {
+                // KeyEvent.KEY_PRESSED, KeyEvent.KEY_RELEASED or KeyEvent.KEY_TYPED?
+                if (e.getID() == KeyEvent.KEY_PRESSED) {
+                    if (e.getKeyCode() == 37) // left arrow
                     {
-                        balli--;
-                        score += 10;
-                        repaint();
+                        if (!maze[balli][ballj].getDown()) // no down edge at (i, j)
+                        {
+                            balli--;
+                            repaint();
+                        } else // down edge exists at (i, j)
+                        {
+                            isAnswering = true;
+                            qaPanel.displayQA(getCurrentQA());
+                            incrementQAIndex();
+                            isEdgeDown = true;
+                            edgeI = balli;
+                            edgeJ = ballj;
+                        }
                     }
-                    else // down edge exists at (i, j)
+                    if (e.getKeyCode() == 38) // up arrow
                     {
-                        qaPanel.displayQA(getCurrentQA());
-                        incrementQAIndex();
-                        isEdgeDown = true;
-                        edgeI = balli;
-                        edgeJ = ballj;
+                        if (!maze[balli][ballj].getRight()) {
+                            ballj--;
+                            repaint();
+                        } else   //right edge exists at (i,j)
+                        {
+                            isAnswering = true;
+                            qaPanel.displayQA(getCurrentQA());
+                            incrementQAIndex();
+                            isEdgeDown = false;
+                            edgeI = balli;
+                            edgeJ = ballj;
+                        }
+                    }
+                    if (e.getKeyCode() == 39)  // right arrow
+                    {
+                        if (!maze[balli + 1][ballj].getDown()) {
+                            balli++;
+                            repaint();
+                        } else   //down edge exists at (i+1,j)
+                        {
+                            isAnswering = true;
+                            qaPanel.displayQA(getCurrentQA());
+                            incrementQAIndex();
+                            isEdgeDown = true;
+                            edgeI = balli + 1;
+                            edgeJ = ballj;
+                        }
+                    } else if (e.getKeyCode() == 40) // down arrow
+                    {
+                        if (!maze[balli][ballj + 1].getRight()) {
+                            ballj++;
+                            repaint();
+                        } else  //right edge exists at (i,j+1)
+                        {
+                            isAnswering = true;
+                            qaPanel.displayQA(getCurrentQA());
+                            incrementQAIndex();
+                            isEdgeDown = false;
+                            edgeI = balli;
+                            edgeJ = ballj + 1;
+                        }
+                    }
+                    if (balli < 0) {
+                        balli = 0;
+                    }
+                    if (ballj < 0) {
+                        ballj = 0;
+                    }
+                    if (balli > ROWS - 2) {
+                        balli = ROWS - 2;
+                    }
+                    if (ballj > COLS - 2) {
+                        ballj = COLS - 2;
                     }
                 }
-                if (e.getKeyCode() == 38) // up arrow
+                if (isGameComplete())     //game complete code here
                 {
-                    if(!maze[balli][ballj].getRight())
-                    {
-                        ballj--;
-                        score += 10;
-                        repaint();
-                    }
-                    else   //right edge exists at (i,j)
-                    {
-                        qaPanel.displayQA(getCurrentQA());
-                        incrementQAIndex();
-                        isEdgeDown = false;
-                        edgeI = balli;
-                        edgeJ = ballj;
-                    }
+                    System.out.println("complete");
+                    resultsCard.setScore(score);
+                    bodyPanel.showCard(bodyPanel.RESULTS_CARD);
                 }
-                if (e.getKeyCode() == 39)  // right arrow
-                {
-                    if(!maze[balli+1][ballj].getDown())
-                    {
-                        balli++;
-                        score += 10;
-                        repaint();
-                    }
-                    else   //down edge exists at (i+1,j)
-                    {
-                        qaPanel.displayQA(getCurrentQA());
-                        incrementQAIndex();
-                        isEdgeDown = true;
-                        edgeI = balli+1;
-                        edgeJ = ballj;
-                    }
-                }
-                else if (e.getKeyCode() == 40) // down arrow
-                {
-                    if(!maze[balli][ballj+1].getRight())
-                    {
-                        ballj++;
-                        score += 10;
-                        repaint();
-                    }
-                    else  //right edge exists at (i,j+1)
-                    {
-                        qaPanel.displayQA(getCurrentQA());
-                        incrementQAIndex();
-                        isEdgeDown = false;
-                        edgeI = balli;
-                        edgeJ = ballj+1;
-                    }
-                }
-                if(balli < 0)
-                {
-                    balli = 0;
-                }
-                if(ballj < 0)
-                {
-                    ballj = 0;
-                }
-                if(balli > ROWS-2)
-                {
-                    balli = ROWS-2;
-                }
-                if(ballj > COLS-2)
-                {
-                    ballj = COLS-2;
-                }
-            }
-            if(isGameComplete())     //game complete code here
-            {
-                System.out.println("complete");
             }
             return false;
         }
+
     }
+
+
     public static void readFromFileUsingScanner() throws FileNotFoundException
     {
         String q = "", a0 = "", a1 = "", a2 = "", a3 = "";
@@ -323,9 +299,11 @@ public class GameCard extends JPanel
         {
             maze[i][j].setRight(false);
         }
-        score += 40;
+
+        score += 100;
         repaint();
     }
+
     public boolean isGameComplete()
     {
         if(balli == ROWS - 2 && ballj == COLS - 2)
@@ -337,4 +315,16 @@ public class GameCard extends JPanel
             return false;
         }
     }
+
+    public int getScore()
+    {
+        return score;
+    }
+
+    public void setResultsCard(ResultsCard resCard)
+    {
+        resultsCard = resCard;
+    }
+
+
 }
