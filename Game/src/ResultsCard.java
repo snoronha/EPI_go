@@ -7,12 +7,13 @@ import java.awt.Font;
 
 public class ResultsCard extends JPanel
 {
-    private int score = 0;
+    GameCard gamCard;
 
-    public ResultsCard()
+    public ResultsCard(GameCard gmCard)
     {
         setBackground(Color.LIGHT_GRAY);
         setVisible(true);
+        gamCard = gmCard;
     }
 
     public void paintComponent(Graphics g)
@@ -23,7 +24,7 @@ public class ResultsCard extends JPanel
 
     public void setScore(int scr)
     {
-        score = scr;
+        gamCard.score = scr;
     }
 
     public void paintScore(Graphics g)
@@ -39,6 +40,28 @@ public class ResultsCard extends JPanel
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        g.drawString("You scored " + score + " points!", 250, 300);
+        g.drawString("You scored " + gamCard.score + " points!", 220, 300);
+
+        if(gamCard.score < 100)
+        {
+            g.drawString("You are not good at this game!", 220, 350);
+        }
+        else if(gamCard.score >= 100 && gamCard.score < 200)
+        {
+            g.drawString("You are OK at this game!", 220, 350);
+        }
+        else if(gamCard.score >= 200 && gamCard.score < 300)
+        {
+            g.drawString("You are decent at this game!", 220, 350);
+        }
+        else if(gamCard.score >= 300 && gamCard.score < 400)
+        {
+            g.drawString("You are really good at this game!", 220, 350);
+        }
+        else if(gamCard.score >= 400)
+        {
+            g.drawString("You are a god at this game!", 220, 350);
+        }
+
     }
 }

@@ -24,7 +24,7 @@ public class BodyPanel extends JPanel
         welcomeCard     = new WelcomeCard();     // Welcome Card
         instructionCard = new InstructionCard(); // Instruction Card
         gameCard        = new GameCard(this);        // Game Card
-        resultsCard     = new ResultsCard();     // Results Card
+        resultsCard     = new ResultsCard(gameCard);     // Results Card
         gameCard.setResultsCard(resultsCard);
         try {
             GameCard.readFromFileUsingScanner();

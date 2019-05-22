@@ -21,7 +21,7 @@ public class WelcomeCard extends JPanel
 
     public void paintWelcome(Graphics g)
     {
-        // Change x, y coordinates to be in terms if WIDTH, HEIGHT
+        // Change x, y coordinates to be in terms of WIDTH, HEIGHT
         g.setColor(Color.ORANGE);
         g.fillRect(100, 50, 600, 600);
         g.setColor(Color.GREEN);
@@ -32,10 +32,10 @@ public class WelcomeCard extends JPanel
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
-        g.drawString("A fun game on Egyptian History", 230, 350);
+        g.drawString("A fun and educational game on Egyptian History", 180, 350);
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 32));
-        g.drawString("Developed by Aarav Noronha", 200, 400);
+        g.drawString("Developed by Aarav Noronha", 220, 400);
     }
 }

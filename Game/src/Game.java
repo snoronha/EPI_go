@@ -1,13 +1,13 @@
 // class sets layout and adds control and body panels to screen
 //LIST OF THINGS I NEED TO DO
-//question feedback - right or wrong
-//results panel
-//edit scoring system
+//add visuals for GameCard screen
+//question feedback - relate to scoring system
+//edit scoring system based on questions
 //make new levels, make new questions, make GameModePanel - pending time
 //video
 import java.awt.BorderLayout;
 import javax.swing.*;
-
+import java.awt.GridLayout;
 public class Game extends JFrame
 {
     private BodyPanel bodyPanel;
@@ -46,21 +46,25 @@ public class Game extends JFrame
     {
         // create a dialog Box
         JDialog d = new JDialog(this, "dialog Box");
+        d.setSize(300, 200); // setsize of dialog
+        d.setLocationRelativeTo(this);
         // create a label
-        JLabel label;
+
+        JPanel panel = new JPanel(new GridLayout(1,3));
+        panel.add(new JLabel("          "));
+
+        JLabel label = new JLabel("");
         if(isSuccess)
         {
-            label = new JLabel("Good job! You got it right!");
+            label.setText("Good job! You got it correct!");
         }
         else
         {
-            label = new JLabel("Not quite. Please try again");
+            label.setText("Not quite. Please try again.");
         }
-        d.add(label);
+        d.add(label, BorderLayout.CENTER);
+        panel.add(new JLabel(""));
 
-        // setsize of dialog
-        d.setSize(300, 200);
-        // set visibility of dialog
-        d.setVisible(true);
+        d.setVisible(true); // set visibility of dialog
     }
 }

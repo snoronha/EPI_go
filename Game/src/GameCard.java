@@ -1,7 +1,16 @@
 //class sets location of ball on screen and makes sure it stays within the lines/boundaries
 //it also makes the actual maze, paints the score on the screen and tests if the game is complete
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+import java.time.Duration;
+import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.KeyboardFocusManager;
+import java.awt.KeyEventDispatcher;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -26,10 +35,12 @@ public class GameCard extends JPanel
     public int edgeI = -1;
     public int edgeJ = -1;
     public boolean isEdgeDown = false;
-    private int score;
+    public int score;
     public boolean isAnswering = false;
     public BodyPanel bodyPanel;
     public ResultsCard resultsCard;
+    private Timer timer;
+    private int timerCount = 0;
 
     // sounds
     // String testSoundName = "src/test.wav";
@@ -41,7 +52,7 @@ public class GameCard extends JPanel
         bodyPanel = bdyPanel;
         setLayout(new BorderLayout());
         setSize(WIDTH, HEIGHT);
-        setBackground(Color.WHITE);
+        setBackground(Color.ORANGE);
 
         // Manager to listen to keyboard events
         KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -52,6 +63,284 @@ public class GameCard extends JPanel
 
         // create maze
         maze = new MazeEdge[ROWS][COLS];
+        createMaze();
+
+        qaPanel = new QAPanel(this);
+        add(qaPanel, BorderLayout.SOUTH);
+
+    }
+
+    public void resetGame()
+    {
+        balli = 0;
+        ballj = 0;
+        edgeI = -1;
+        edgeJ = -1;
+        score = 0;
+        timerCount  = 0;
+        isEdgeDown  = false;
+        isAnswering = false;
+        createMaze();
+    }
+
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        paintMaze(g);
+        paintBall(g);
+        paintScore(g);
+        paintTimer(g);
+    }
+
+    public void paintBall(Graphics g)
+    {
+        g.setColor(Color.RED);
+        g.fillOval(balli * xOffset + 3*xOffset/2, ballj * yOffset + 3*yOffset/2, 20,20);
+    }
+
+    public void paintTimer(Graphics g)
+    {
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
+        g.drawString("Time", WIDTH - 100, 140);
+        g.setColor(Color.WHITE);
+        g.fillRect(WIDTH - 125, 145, 100, 75);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 48));
+        g.setColor(Color.BLACK);
+        if (timerCount/2 < 10)
+        {
+            g.drawString(String.valueOf(timerCount/2), WIDTH - 90, 200);
+        }
+        else if (timerCount/2 < 100)
+        {
+            g.drawString(String.valueOf(timerCount/2), WIDTH - 100, 200);
+        }
+    }
+
+    public void paintScore(Graphics g)
+    {
+        g.setColor(Color.BLACK);
+        g.fillRect(WIDTH - 129, 21, 108, 83);
+        g.setColor(Color.GREEN);
+        g.fillRect(WIDTH - 125, 25, 100, 75);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 48));
+        g.setColor(Color.BLACK);
+        g.drawString(String.valueOf(score), WIDTH - 110, 70);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
+        g.drawString("Score", WIDTH - 100, 20);
+    }
+
+    public void paintMaze(Graphics g) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (maze[i][j].getRight()) {
+                    g.drawLine(xOffset + xOffset * i, yOffset + yOffset * j, xOffset + xOffset * (i + 1), yOffset + yOffset * j);
+                }
+                if (maze[i][j].getDown()) {
+                    g.drawLine(xOffset + xOffset * i, yOffset + yOffset * j, xOffset + xOffset * i, yOffset + yOffset * (j + 1));
+                }
+            }
+        }
+    }
+
+
+    // Implement a KeyEventDispatcher that listens to KeyEvents
+    private class MyKeyDispatcher implements KeyEventDispatcher
+    {
+        @Override
+        public boolean dispatchKeyEvent(KeyEvent e) {
+            if (!isAnswering) {
+                // KeyEvent.KEY_PRESSED, KeyEvent.KEY_RELEASED or KeyEvent.KEY_TYPED?
+                if (e.getID() == KeyEvent.KEY_PRESSED) {
+                    if (e.getKeyCode() == 37) // left arrow
+                    {
+                        if (!maze[balli][ballj].getDown()) // no down edge at (i, j)
+                        {
+                            balli--;
+                            repaint();
+                        } else // down edge exists at (i, j)
+                        {
+                            isAnswering = true;
+                            qaPanel.displayQA(getCurrentQA());
+                            incrementQAIndex();
+                            isEdgeDown = true;
+                            edgeI = balli;
+                            edgeJ = ballj;
+                        }
+                    }
+                    if (e.getKeyCode() == 38) // up arrow
+                    {
+                        if (!maze[balli][ballj].getRight()) {
+                            ballj--;
+                            repaint();
+                        } else   //right edge exists at (i,j)
+                        {
+                            isAnswering = true;
+                            qaPanel.displayQA(getCurrentQA());
+                            incrementQAIndex();
+                            isEdgeDown = false;
+                            edgeI = balli;
+                            edgeJ = ballj;
+                        }
+                    }
+                    if (e.getKeyCode() == 39)  // right arrow
+                    {
+                        if (!maze[balli + 1][ballj].getDown()) {
+                            balli++;
+                            // repaint();
+                        } else   //down edge exists at (i+1,j)
+                        {
+                            isAnswering = true;
+                            qaPanel.displayQA(getCurrentQA());
+                            incrementQAIndex();
+                            isEdgeDown = true;
+                            edgeI = balli + 1;
+                            edgeJ = ballj;
+                        }
+                    } else if (e.getKeyCode() == 40) // down arrow
+                    {
+                        if (!maze[balli][ballj + 1].getRight()) {
+                            ballj++;
+                            repaint();
+                        } else  //right edge exists at (i,j+1)
+                        {
+                            isAnswering = true;
+                            qaPanel.displayQA(getCurrentQA());
+                            incrementQAIndex();
+                            isEdgeDown = false;
+                            edgeI = balli;
+                            edgeJ = ballj + 1;
+                        }
+                    }
+                    if (balli < 0) {
+                        balli = 0;
+                    }
+                    if (ballj < 0) {
+                        ballj = 0;
+                    }
+                    if (balli > ROWS - 2) {
+                        balli = ROWS - 2;
+                    }
+                    if (ballj > COLS - 2) {
+                        ballj = COLS - 2;
+                    }
+                }
+                if (isGameComplete())     //game complete code here
+                {
+                    System.out.println("complete");
+                    resultsCard.setScore(score);
+                    bodyPanel.showCard(bodyPanel.RESULTS_CARD);
+                }
+            }
+            return false;
+        }
+    }
+
+    public void animateTimer()
+    {
+        ActionListener taskPerformer = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                timerCount += 1;
+                repaint();
+                // if (timerCount == 20) timer.stop();
+            }
+        };
+        timer = new Timer(500, taskPerformer);
+        timer.start();
+    }
+
+    // Read Questions.txt: this file contains questions and multiple choice answers
+    public static void readFromFileUsingScanner() throws FileNotFoundException
+    {
+        String q = "", a0 = "", a1 = "", a2 = "", a3 = "";
+
+        Scanner reader = new Scanner(new File("src/Questions.txt"));
+        int counter = 0;
+        int qNum = 0;
+        while (reader.hasNext())
+        {
+            String str = reader.nextLine();
+
+            if(counter % 5 == 0)
+            {
+                if (counter > 0) // create previous QA and append to QAs
+                {
+                    QAs[qNum] = new QA(q, a0, a1, a2, a3);
+                    qNum++;
+                }
+                q = str;
+            }
+            else if(counter % 5 == 1)
+            {
+                a0 = str;
+            }
+            else if(counter % 5 == 2)
+            {
+                a1 = str;
+            }
+            else if(counter % 5 == 3)
+            {
+                a2 = str;
+            }
+            else if(counter % 5 == 4)
+            {
+                a3 = str;
+            }
+            counter++;
+        }
+        QAs[qNum] = new QA(q, a0, a1, a2, a3);
+        qNum++;
+    }
+    public QA getCurrentQA()
+    {
+        return QAs[currentQAIndex];
+    }
+
+    public int incrementQAIndex()
+    {
+        qaPanel.counter = 0;
+        qaPanel.correctChosen = false;
+        currentQAIndex++;
+        currentQAIndex = currentQAIndex % NUM_QUESTIONS;
+        return currentQAIndex;
+    }
+    public void removeMazeEdge(int i, int j, boolean isDown)
+    {
+        if(isDown)
+        {
+            maze[i][j].setDown(false);
+        }
+        else
+        {
+            maze[i][j].setRight(false);
+        }
+        repaint();
+    }
+
+    public boolean isGameComplete()
+    {
+        if(balli == ROWS - 2 && ballj == COLS - 2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public int getScore()
+    {
+        return score;
+    }
+
+    public void setResultsCard(ResultsCard resCard)
+    {
+        resultsCard = resCard;
+    }
+
+    public void createMaze()
+    {
         for(int i = 0; i < ROWS; i++)
         {
             for(int j = 0; j < COLS; j++)
@@ -99,232 +388,6 @@ public class GameCard extends JPanel
         maze[2][5].set(true, false);
         maze[3][5].set(true, false);
         maze[4][5].set(true, false);
-
-
-        final String QA_Panel = "QAPanel";
-        qaPanel = new QAPanel(this);
-        add(qaPanel, BorderLayout.SOUTH);
-
     }
-
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        drawMaze(g);
-        g.setColor(Color.RED);
-        g.fillOval(balli * xOffset + 3*xOffset/2, ballj * yOffset + 3*yOffset/2, 20,20);
-
-        // paintScore()
-        paintScore(g);
-    }
-
-    public void paintScore(Graphics g)
-    {
-        g.setColor(Color.BLACK);
-        g.fillRect(WIDTH - 129, 21, 108, 83);
-        g.setColor(Color.GREEN);
-        g.fillRect(WIDTH - 125, 25, 100, 75);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 48));
-        g.setColor(Color.BLACK);
-        g.drawString(String.valueOf(score), WIDTH - 110, 70);
-        g.setFont(new Font("TimesRoman", Font.PLAIN, 24));
-        g.drawString("Score", WIDTH - 100, 20);
-    }
-
-    public void drawMaze(Graphics g) {
-        for (int i = 0; i < ROWS; i++) {
-            for (int j = 0; j < COLS; j++) {
-                if (maze[i][j].getRight()) {
-                    g.drawLine(xOffset + xOffset * i, yOffset + yOffset * j, xOffset + xOffset * (i + 1), yOffset + yOffset * j);
-                }
-                if (maze[i][j].getDown()) {
-                    g.drawLine(xOffset + xOffset * i, yOffset + yOffset * j, xOffset + xOffset * i, yOffset + yOffset * (j + 1));
-                }
-            }
-        }
-    }
-
-    // Implement a KeyEventDispatcher that listens to KeyEvents
-    private class MyKeyDispatcher implements KeyEventDispatcher
-    {
-        @Override
-        public boolean dispatchKeyEvent(KeyEvent e) {
-            if (!isAnswering) {
-                // KeyEvent.KEY_PRESSED, KeyEvent.KEY_RELEASED or KeyEvent.KEY_TYPED?
-                if (e.getID() == KeyEvent.KEY_PRESSED) {
-                    if (e.getKeyCode() == 37) // left arrow
-                    {
-                        if (!maze[balli][ballj].getDown()) // no down edge at (i, j)
-                        {
-                            balli--;
-                            repaint();
-                        } else // down edge exists at (i, j)
-                        {
-                            isAnswering = true;
-                            qaPanel.displayQA(getCurrentQA());
-                            incrementQAIndex();
-                            isEdgeDown = true;
-                            edgeI = balli;
-                            edgeJ = ballj;
-                        }
-                    }
-                    if (e.getKeyCode() == 38) // up arrow
-                    {
-                        if (!maze[balli][ballj].getRight()) {
-                            ballj--;
-                            repaint();
-                        } else   //right edge exists at (i,j)
-                        {
-                            isAnswering = true;
-                            qaPanel.displayQA(getCurrentQA());
-                            incrementQAIndex();
-                            isEdgeDown = false;
-                            edgeI = balli;
-                            edgeJ = ballj;
-                        }
-                    }
-                    if (e.getKeyCode() == 39)  // right arrow
-                    {
-                        if (!maze[balli + 1][ballj].getDown()) {
-                            balli++;
-                            repaint();
-                        } else   //down edge exists at (i+1,j)
-                        {
-                            isAnswering = true;
-                            qaPanel.displayQA(getCurrentQA());
-                            incrementQAIndex();
-                            isEdgeDown = true;
-                            edgeI = balli + 1;
-                            edgeJ = ballj;
-                        }
-                    } else if (e.getKeyCode() == 40) // down arrow
-                    {
-                        if (!maze[balli][ballj + 1].getRight()) {
-                            ballj++;
-                            repaint();
-                        } else  //right edge exists at (i,j+1)
-                        {
-                            isAnswering = true;
-                            qaPanel.displayQA(getCurrentQA());
-                            incrementQAIndex();
-                            isEdgeDown = false;
-                            edgeI = balli;
-                            edgeJ = ballj + 1;
-                        }
-                    }
-                    if (balli < 0) {
-                        balli = 0;
-                    }
-                    if (ballj < 0) {
-                        ballj = 0;
-                    }
-                    if (balli > ROWS - 2) {
-                        balli = ROWS - 2;
-                    }
-                    if (ballj > COLS - 2) {
-                        ballj = COLS - 2;
-                    }
-                }
-                if (isGameComplete())     //game complete code here
-                {
-                    System.out.println("complete");
-                    resultsCard.setScore(score);
-                    bodyPanel.showCard(bodyPanel.RESULTS_CARD);
-                }
-            }
-            return false;
-        }
-
-    }
-
-
-    public static void readFromFileUsingScanner() throws FileNotFoundException
-    {
-        String q = "", a0 = "", a1 = "", a2 = "", a3 = "";
-
-        Scanner reader = new Scanner(new File("src/Questions.txt"));
-        int counter = 0;
-        int qNum = 0;
-        while (reader.hasNext())
-        {
-            String str = reader.nextLine();
-
-            if(counter % 5 == 0)
-            {
-                if (counter > 0) // create previous QA and append to QAs
-                {
-                    QAs[qNum] = new QA(q, a0, a1, a2, a3);
-                    qNum++;
-                }
-                q = str;
-            }
-            else if(counter % 5 == 1)
-            {
-                a0 = str;
-            }
-            else if(counter % 5 == 2)
-            {
-                a1 = str;
-            }
-            else if(counter % 5 == 3)
-            {
-                a2 = str;
-            }
-            else if(counter % 5 == 4)
-            {
-                a3 = str;
-            }
-            counter++;
-        }
-        QAs[qNum] = new QA(q, a0, a1, a2, a3);
-        qNum++;
-    }
-    public QA getCurrentQA()
-    {
-        return QAs[currentQAIndex];
-    }
-    public int incrementQAIndex()
-    {
-        currentQAIndex++;
-        currentQAIndex = currentQAIndex % NUM_QUESTIONS;
-        return currentQAIndex;
-    }
-    public void removeMazeEdge(int i, int j, boolean isDown)
-    {
-        if(isDown)
-        {
-            maze[i][j].setDown(false);
-        }
-        else
-        {
-            maze[i][j].setRight(false);
-        }
-
-        score += 100;
-        repaint();
-    }
-
-    public boolean isGameComplete()
-    {
-        if(balli == ROWS - 2 && ballj == COLS - 2)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public int getScore()
-    {
-        return score;
-    }
-
-    public void setResultsCard(ResultsCard resCard)
-    {
-        resultsCard = resCard;
-    }
-
 
 }
