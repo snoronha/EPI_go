@@ -18,7 +18,6 @@ public class Garden extends JPanel implements MouseListener, KeyListener
         mouseClicked = false;
         isWater      = false;
         isSun        = false;
-        setBackgroundColor(Color.PINK);
         addMouseListener(this);
         addKeyListener(this);
         setFocusable(true);
@@ -38,7 +37,7 @@ public class Garden extends JPanel implements MouseListener, KeyListener
         }
         else
         {
-            setBackgroundColor(Color.PINK);
+            setBackgroundColor(g, Color.PINK);
         }
     }
 
@@ -101,21 +100,22 @@ public class Garden extends JPanel implements MouseListener, KeyListener
     public void mouseExited(MouseEvent evt) { }
 
 
-    public void setBackgroundColor(Color color)
+    public void setBackgroundColor(Graphics g, Color color)
     {
-        setBackground(color);
+        g.setColor(color);
+	g.fillRect(0, 0, WIDTH, HEIGHT);
     }
 
     public void paintWater(Graphics g)
     {
-	    setBackgroundColor(Color.GREEN);
+        setBackgroundColor(g, Color.GREEN);
     }
     
     public void paintSun(Graphics g)
     {
-	    setBackgroundColor(Color.GREEN);
+        setBackgroundColor(g, Color.GREEN);
         g.setColor(Color.YELLOW);
-	    g.fillOval(0, 0, 50, 50);
+        g.fillOval(0, 0, 50, 50);
         for(int i = 0;i < WIDTH; i += 200)
         {
             for(int j = 0;j < HEIGHT; j += 200)
