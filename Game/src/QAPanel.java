@@ -1,6 +1,14 @@
 //class deals with the questions used in my game and implements radio buttons to do so
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.JLabel;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,7 +16,7 @@ public class QAPanel extends JPanel implements ActionListener
 {
     GameCard gameCard;
     int isCorrect;
-    JTextArea qaText = new JTextArea("Welcome to the qaPanel!" ,1,10);
+    JTextArea qaText = new JTextArea("" ,1,10);
     JRadioButton radioButton0, radioButton1, radioButton2, radioButton3;
     ButtonGroup buttonGroup;
     JButton submitButton;
@@ -23,10 +31,10 @@ public class QAPanel extends JPanel implements ActionListener
         add(qaText, BorderLayout.NORTH);
 
         JPanel answers = new JPanel(new GridLayout(2,2));
-        radioButton0 = new JRadioButton("Option 1"); radioButton0.setActionCommand("0");
-        radioButton1 = new JRadioButton("Option 2"); radioButton1.setActionCommand("1");
-        radioButton2 = new JRadioButton("Option 3"); radioButton2.setActionCommand("2");
-        radioButton3 = new JRadioButton("Option 4"); radioButton3.setActionCommand("3");
+        radioButton0 = new JRadioButton(""); radioButton0.setActionCommand("0");
+        radioButton1 = new JRadioButton(""); radioButton1.setActionCommand("1");
+        radioButton2 = new JRadioButton(""); radioButton2.setActionCommand("2");
+        radioButton3 = new JRadioButton(""); radioButton3.setActionCommand("3");
 
         buttonGroup = new ButtonGroup();
         buttonGroup.add(radioButton0);
@@ -68,13 +76,15 @@ public class QAPanel extends JPanel implements ActionListener
                     if (isCorrect == 0)
                     {
                         gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
-                        gameCard.bodyPanel.game.showModal(true);
+                        gameCard.bodyPanel.game.dialog.setText("Yes! You got it right!");
+                        gameCard.bodyPanel.game.dialog.setVisibility(true);
                         counter++;
                         correctChosen = true;
                     }
                     else
                     {
-                        gameCard.bodyPanel.game.showModal(false);
+                        gameCard.bodyPanel.game.dialog.setText("Sorry. Please try again.");
+                        gameCard.bodyPanel.game.dialog.setVisibility(true);
                         counter++;
                     }
                 }
@@ -83,13 +93,15 @@ public class QAPanel extends JPanel implements ActionListener
                     if (isCorrect == 1)
                     {
                         gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
-                        gameCard.bodyPanel.game.showModal(true);
+                        gameCard.bodyPanel.game.dialog.setText("Yes! You got it right!");
+                        gameCard.bodyPanel.game.dialog.setVisibility(true);
                         counter++;
                         correctChosen = true;
                     }
                     else
                     {
-                        gameCard.bodyPanel.game.showModal(false);
+                        gameCard.bodyPanel.game.dialog.setText("Sorry. Please try again.");
+                        gameCard.bodyPanel.game.dialog.setVisibility(true);
                         counter++;
                     }
                 }
@@ -98,13 +110,15 @@ public class QAPanel extends JPanel implements ActionListener
                     if (isCorrect == 2)
                     {
                         gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
-                        gameCard.bodyPanel.game.showModal(true);
+                        gameCard.bodyPanel.game.dialog.setText("Yes! You got it right!");
+                        gameCard.bodyPanel.game.dialog.setVisibility(true);
                         counter++;
                         correctChosen = true;
                     }
                     else
                     {
-                        gameCard.bodyPanel.game.showModal(false);
+                        gameCard.bodyPanel.game.dialog.setText("Sorry. Please try again.");
+                        gameCard.bodyPanel.game.dialog.setVisibility(true);
                         counter++;
                     }
                 }
@@ -113,13 +127,15 @@ public class QAPanel extends JPanel implements ActionListener
                     if (isCorrect == 3)
                     {
                         gameCard.removeMazeEdge(gameCard.edgeI, gameCard.edgeJ, gameCard.isEdgeDown);
-                        gameCard.bodyPanel.game.showModal(true);
+                        gameCard.bodyPanel.game.dialog.setText("Yes! You got it right!");
+                        gameCard.bodyPanel.game.dialog.setVisibility(true);
                         counter++;
                         correctChosen = true;
                     }
                     else
                     {
-                        gameCard.bodyPanel.game.showModal(false);
+                        gameCard.bodyPanel.game.dialog.setText("Sorry. Please try again.");
+                        gameCard.bodyPanel.game.dialog.setVisibility(true);
                         counter++;
                     }
                 }

@@ -1,100 +1,100 @@
-Q:How many pharoahs were there in ancient Egypt?
-A:90
-B:170|correct
-C:320
-D:650
-Q:Who was the first pharoah?
-A:King Tut
-B:Khufu
-C:Ramses|correct
-D:Mufasa
-Q:Who was the last pharoah?
-A:Cleopatra|correct
-B:Mekh
-C:Noli
-D:Gemti
-Q:Who was the richest pharoah?
-A:Censitanum
-B:Amenhotep|correct
-C:Loog
-D:Subul
-Q:Who was the most famous pharoah?
-A:Selim
-B:Jesus
-C:Buddha
-D:King Tut|correct
-Q:Who is regarded as the greatest or most powerful pharoah?
-A:Bono
-B:Ramesses|correct
-C:Gogi
-D:Tesnit
-Q:Who was the youngest pharoah?
-A:Pepy the second|correct
-B:Pepy the third
-C:Golire
-D:None of the above
-Q:At what age did Pepy the second become a pharoah?
-A:10
-B:6|correct
-C:3
-D:1
-Q:What image did the crown of the pharoahs have on it?
-A:Cobra Goddess|correct
-B:Sun
-C:Rain
-D:Moon
-Q:What did the pharoahs use to give flavor to food?
-A:Coriander
-B:Cumin
-C:Garlic|correct
-D:Parsley
-Q:What could pharoahs do that no one else could?
-A:Kill anyone they want
-B:Sacrifice themselves
-C:Earn money
-D:Make offerings to the gods|correct
-Q:Was ancient Egypt monotheistic or polytheistic?
-A:Monotheistic
-B:Polytheistic|correct
-C:Neither
-D:Both
-Q:At what age did King Tut die?
-A:80
-B:23
-C:19|correct
-D:42
-Q:How long did the oldest pharoah live?
-A:50 years
-B:105 years
-C:92 years
-D:73 years|correct
-Q:About how long did the pharoahs last?
-A:2000 years|correct
-B:1500 years
-C:4000 years
-C:300 years
-Q:Who were the pharoahs taken over by?
-A:Greeks
-B:Romans
-C:Persians|correct
-D:Russians
-Q:In what language did the pharoahs write/speak in?
-A:English
-B:Sign language
-C:None,we don't know how they communicated
-D:Hieroglyphics|correct
-Q:Who was the oldest living pharoah?
-A:Khufu
-B:Gantos
-C:Mekh|correct
-D:Lesti
-Q:Which pharoah was the promoter of eqyptian trade?
-A:Numbikan
-B:Canaan
-C:Molsen
-D:Hatshepsut|correct
-Q:Which pharoah was the patron of the arts?
-A:Senusret|correct
-B:Halimet
-C:Conmi
-D:Zagru
+Q: How many pharaohs were there in ancient Egypt?
+A: 90
+B: 170|correct
+C: 320
+D: 650
+Q: Who was the first pharaoh?
+A: King Tut
+B: Khufu
+C: Ramses|correct
+D: Mufasa
+Q: Who was the last pharaoh?
+A: Cleopatra|correct
+B: Mekh
+C: Noli
+D: Gemti
+Q: Who was the richest pharaoh?
+A: Censitanum
+B: Amenhotep|correct
+C: Loog
+D: Subul
+Q: Who was the most famous pharaoh?
+A: Selim
+B: Jesus
+C: Buddha
+D: King Tut|correct
+Q: Who is regarded as the greatest or most powerful pharaoh?
+A: Bono
+B: Ramesses|correct
+C: Gogi
+D: Tesnit
+Q: Who was the youngest pharaoh?
+A: Pepy the second|correct
+B: Pepy the third
+C: Golire
+D: None of the above
+Q: At what age did Pepy the second become a pharaoh?
+A: 10
+B: 6|correct
+C: 3
+D: 1
+Q: What image did the crown of the pharaohs have on it?
+A: Cobra Goddess|correct
+B: Sun
+C: Rain
+D: Moon
+Q: What did the pharaohs use to give flavor to food?
+A: Coriander
+B: Cumin
+C: Garlic|correct
+D: Parsley
+Q: What could pharaohs do that no one else could?
+A: Kill anyone they want
+B: Sacrifice themselves
+C: Earn money
+D: Make offerings to the gods|correct
+Q: Was ancient Egypt monotheistic or polytheistic?
+A: Monotheistic
+B: Polytheistic|correct
+C: Neither
+D: Both
+Q: At what age did King Tut die?
+A: 80
+B: 23
+C: 19|correct
+D: 42
+Q: How long did the oldest pharaoh live?
+A: 50 years
+B: 105 years
+C: 92 years
+D: 73 years|correct
+Q: About how long did the pharaohs last?
+A: 2000 years|correct
+B: 1500 years
+C: 4000 years
+C: 300 years
+Q: Who were the pharaohs taken over by?
+A: Greeks
+B: Romans
+C: Persians|correct
+D: Russians
+Q: In what language did the pharaohs write/speak in?
+A: English
+B: Sign language
+C: None,we don't know how they communicated
+D: Hieroglyphics|correct
+Q: Who was the oldest living pharaoh?
+A: Khufu
+B: Gantos
+C: Mekh|correct
+D: Lesti
+Q: Which pharaoh was the promoter of Eqyptian trade?
+A: Numbikan
+B: Canaan
+C: Molsen
+D: Hatshepsut|correct
+Q: Which pharaoh was the patron of the arts?
+A: Senusret|correct
+B: Halimet
+C: Conmi
+D: Zagru

@@ -38,9 +38,7 @@ public class InstructionCard extends JPanel
         g.drawString("On a correct answer the barrier you hit disappears and you can proceed.", 150, 400);
         g.drawString("When you first open the maze, ignore the QAPanel.", 150, 450);
         g.drawString("You will get points for a correct answer and will see your score at the end.", 150, 500);
-        g.drawString("Your score at the top of the screen won't show it but the less lines", 150, 550);
-        g.drawString("you hit, the higher your score will be on the results panel.", 150, 575);
-        g.drawString("Enjoy!", 150, 625);
+        g.drawString("Enjoy!", 150, 550);
     }
 
 }

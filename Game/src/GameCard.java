@@ -2,7 +2,6 @@
 //it also makes the actual maze, paints the score on the screen and tests if the game is complete
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import java.time.Duration;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.Font;
@@ -14,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.Random;
 
 import java.awt.event.KeyEvent;
 
@@ -68,6 +68,8 @@ public class GameCard extends JPanel
         qaPanel = new QAPanel(this);
         add(qaPanel, BorderLayout.SOUTH);
 
+        createTimer();
+
     }
 
     public void resetGame()
@@ -87,6 +89,7 @@ public class GameCard extends JPanel
     {
         super.paintComponent(g);
         paintMaze(g);
+        paintActiveEdge(g);
         paintBall(g);
         paintScore(g);
         paintTimer(g);
@@ -114,6 +117,10 @@ public class GameCard extends JPanel
         else if (timerCount/2 < 100)
         {
             g.drawString(String.valueOf(timerCount/2), WIDTH - 100, 200);
+        }
+        else
+        {
+            g.drawString(String.valueOf(timerCount/2), WIDTH - 110, 200);
         }
     }
 
@@ -143,86 +150,111 @@ public class GameCard extends JPanel
         }
     }
 
+    public void paintActiveEdge(Graphics g)
+    {
+        if (edgeI >= 0 && edgeJ >= 0)
+        {
+            g.setColor(Color.RED);
+            if (isEdgeDown)
+            {
+                g.fillRect(xOffset + xOffset * edgeI - 3, yOffset + yOffset * edgeJ, 6, yOffset);
+            }
+            else
+            {
+                g.fillRect(xOffset + xOffset * edgeI, yOffset + yOffset * edgeJ - 3, xOffset, 6);
+            }
+        }
+    }
 
     // Implement a KeyEventDispatcher that listens to KeyEvents
     private class MyKeyDispatcher implements KeyEventDispatcher
     {
         @Override
-        public boolean dispatchKeyEvent(KeyEvent e) {
-            if (!isAnswering) {
+        public boolean dispatchKeyEvent(KeyEvent e)
+        {
+            if (!isAnswering)
+            {
                 // KeyEvent.KEY_PRESSED, KeyEvent.KEY_RELEASED or KeyEvent.KEY_TYPED?
-                if (e.getID() == KeyEvent.KEY_PRESSED) {
+                if (e.getID() == KeyEvent.KEY_PRESSED)
+                {
                     if (e.getKeyCode() == 37) // left arrow
                     {
-                        if (!maze[balli][ballj].getDown()) // no down edge at (i, j)
+                        if (balli > 0)
                         {
-                            balli--;
-                            repaint();
-                        } else // down edge exists at (i, j)
-                        {
-                            isAnswering = true;
-                            qaPanel.displayQA(getCurrentQA());
-                            incrementQAIndex();
-                            isEdgeDown = true;
-                            edgeI = balli;
-                            edgeJ = ballj;
+                            if (!maze[balli][ballj].getDown()) // no down edge at (i, j)
+                            {
+                                balli--;
+                                repaint();
+                            }
+                            else // down edge exists at (i, j)
+                            {
+                                isAnswering = true;
+                                qaPanel.displayQA(getCurrentQA());
+                                incrementQAIndex();
+                                isEdgeDown = true;
+                                edgeI = balli;
+                                edgeJ = ballj;
+                            }
                         }
                     }
                     if (e.getKeyCode() == 38) // up arrow
                     {
-                        if (!maze[balli][ballj].getRight()) {
-                            ballj--;
-                            repaint();
-                        } else   //right edge exists at (i,j)
+                        if (ballj > 0)
                         {
-                            isAnswering = true;
-                            qaPanel.displayQA(getCurrentQA());
-                            incrementQAIndex();
-                            isEdgeDown = false;
-                            edgeI = balli;
-                            edgeJ = ballj;
+                            if (!maze[balli][ballj].getRight())
+                            {
+                                ballj--;
+                                repaint();
+                            }
+                            else   // right edge exists at (i,j)
+                            {
+                                isAnswering = true;
+                                qaPanel.displayQA(getCurrentQA());
+                                incrementQAIndex();
+                                isEdgeDown = false;
+                                edgeI = balli;
+                                edgeJ = ballj;
+                            }
                         }
                     }
                     if (e.getKeyCode() == 39)  // right arrow
                     {
-                        if (!maze[balli + 1][ballj].getDown()) {
-                            balli++;
-                            // repaint();
-                        } else   //down edge exists at (i+1,j)
-                        {
-                            isAnswering = true;
-                            qaPanel.displayQA(getCurrentQA());
-                            incrementQAIndex();
-                            isEdgeDown = true;
-                            edgeI = balli + 1;
-                            edgeJ = ballj;
+                        if (balli < ROWS - 2) {
+                            if (!maze[balli + 1][ballj].getDown())
+                            {
+                                balli++;
+                                repaint();
+                            }
+                            else   // down edge exists at (i+1,j)
+                            {
+                                isAnswering = true;
+                                qaPanel.displayQA(getCurrentQA());
+                                incrementQAIndex();
+                                isEdgeDown = true;
+                                edgeI = balli + 1;
+                                edgeJ = ballj;
+                            }
                         }
-                    } else if (e.getKeyCode() == 40) // down arrow
+                    }
+                    else if (e.getKeyCode() == 40) // down arrow
                     {
-                        if (!maze[balli][ballj + 1].getRight()) {
-                            ballj++;
-                            repaint();
-                        } else  //right edge exists at (i,j+1)
+                        if (ballj < COLS - 2)
                         {
-                            isAnswering = true;
-                            qaPanel.displayQA(getCurrentQA());
-                            incrementQAIndex();
-                            isEdgeDown = false;
-                            edgeI = balli;
-                            edgeJ = ballj + 1;
+                            if (!maze[balli][ballj + 1].getRight())
+                            {
+                                ballj++;
+                                repaint();
+                            }
+                            else  //right edge exists at (i,j+1)
+                            {
+                                isAnswering = true;
+                                qaPanel.displayQA(getCurrentQA());
+                                incrementQAIndex();
+                                isEdgeDown = false;
+                                edgeI = balli;
+                                edgeJ = ballj + 1;
+                            }
                         }
-                    }
-                    if (balli < 0) {
-                        balli = 0;
-                    }
-                    if (ballj < 0) {
-                        ballj = 0;
-                    }
-                    if (balli > ROWS - 2) {
-                        balli = ROWS - 2;
-                    }
-                    if (ballj > COLS - 2) {
-                        ballj = COLS - 2;
                     }
                 }
                 if (isGameComplete())     //game complete code here
@@ -236,17 +268,28 @@ public class GameCard extends JPanel
         }
     }
 
-    public void animateTimer()
+    public void createTimer()
     {
         ActionListener taskPerformer = new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt)
+            {
                 timerCount += 1;
                 repaint();
                 // if (timerCount == 20) timer.stop();
             }
         };
         timer = new Timer(500, taskPerformer);
+
+    }
+
+    public void startTimer()
+    {
         timer.start();
+    }
+
+    public void stopTimer()
+    {
+        timer.stop();
     }
 
     // Read Questions.txt: this file contains questions and multiple choice answers
@@ -289,8 +332,24 @@ public class GameCard extends JPanel
             counter++;
         }
         QAs[qNum] = new QA(q, a0, a1, a2, a3);
+        QAs       = RandomizeQAs(QAs);
         qNum++;
     }
+
+    // Randomize the QAs array
+    public static QA[] RandomizeQAs(QA[] array)
+    {
+        Random rgen = new Random();  // Random number generator
+        for (int i = 0; i < array.length; i++)
+        {
+            int randomPosition = rgen.nextInt(array.length);
+            QA temp  = array[i];
+            array[i] = array[randomPosition];
+            array[randomPosition] = temp;
+        }
+        return array;
+    }
+
     public QA getCurrentQA()
     {
         return QAs[currentQAIndex];
@@ -304,6 +363,7 @@ public class GameCard extends JPanel
         currentQAIndex = currentQAIndex % NUM_QUESTIONS;
         return currentQAIndex;
     }
+
     public void removeMazeEdge(int i, int j, boolean isDown)
     {
         if(isDown)
@@ -314,6 +374,8 @@ public class GameCard extends JPanel
         {
             maze[i][j].setRight(false);
         }
+        edgeI = -1;
+        edgeJ = -1;
         repaint();
     }
 
@@ -341,6 +403,7 @@ public class GameCard extends JPanel
 
     public void createMaze()
     {
+        // fill empty maze (no edges)
         for(int i = 0; i < ROWS; i++)
         {
             for(int j = 0; j < COLS; j++)
@@ -348,46 +411,88 @@ public class GameCard extends JPanel
                 maze[i][j] = new MazeEdge(false, false);
             }
         }
-        maze[0][0].set(true, false);
-        maze[1][0].set(true, false);
-        maze[2][0].set(true, false);
-        maze[3][0].set(true, false);
-        maze[4][0].set(true, false);
-        maze[5][0].set(false, true);
+        fillRandomMaze();
 
-        maze[0][1].set(false, true);
-        maze[1][1].set(true, false);
-        maze[2][1].set(true, false);
-        maze[3][1].set(true, true);
-        maze[4][1].set(false, true);
-        maze[5][1].set(false, true);
+    }
 
-        maze[0][2].set(false, true);
-        maze[1][2].set(true, false);
-        maze[2][2].set(false, true);
-        maze[3][2].set(false, true);
-        maze[4][2].set(false, true);
-        maze[5][2].set(false, true);
+    public void fillRandomMaze()
+    {
+        Random rgen = new Random();
+        int randomInt = rgen.nextInt(3);
+        System.out.println("RAND = " + randomInt);
 
-        maze[0][3].set(false, true);
-        maze[1][3].set(true, false);
-        maze[2][3].set(true,false);
-        maze[3][3].set(false, true);
-        maze[4][3].set(true, true);
-        maze[5][3].set(false, true);
+        if (randomInt == 0)
+        {
+            // Maze 0
+            maze[0][0].set(true, false); maze[1][0].set(true, false);
+            maze[2][0].set(true, false); maze[3][0].set(true, false);
+            maze[4][0].set(true, false); maze[5][0].set(false, true);
+
+            maze[0][1].set(false, true); maze[1][1].set(true, false);
+            maze[2][1].set(true, false); maze[3][1].set(true, true);
+            maze[4][1].set(false, true); maze[5][1].set(false, true);
+
+            maze[0][2].set(false, true); maze[1][2].set(true, false);
+            maze[2][2].set(false, true); maze[3][2].set(false, true);
+            maze[4][2].set(false, true); maze[5][2].set(false, true);
+
+            maze[0][3].set(false, true); maze[1][3].set(true, false);
+            maze[2][3].set(true, false); maze[3][3].set(false, true);
+            maze[4][3].set(true, true);  maze[5][3].set(false, true);
+
+            maze[0][4].set(true, true);  maze[1][4].set(true, true);
+            maze[2][4].set(true, false); maze[3][4].set(true, false);
+            maze[4][4].set(true, false);
+
+            maze[0][5].set(true, false); maze[1][5].set(true, false);
+            maze[2][5].set(true, false); maze[3][5].set(true, false);
+            maze[4][5].set(true, false);
+        }
+        else if (randomInt == 1)
+        {
+            // Maze 1
+            maze[0][0].set(true, false); maze[1][0].set(true, false);
+            maze[2][0].set(true, true);  maze[3][0].set(true, true);
+            maze[4][0].set(true, true);  maze[5][0].set(false, true);
+
+            maze[0][1].set(false, true); maze[1][1].set(true, false);
+            maze[2][1].set(true, false); maze[3][1].set(true, true);
+            maze[4][1].set(false, true); maze[5][1].set(false, true);
+
+            maze[0][2].set(true, true);  maze[1][2].set(true, false);
+            maze[2][2].set(false, true); maze[3][2].set(false, true);
+            maze[4][2].set(false, true); maze[5][2].set(false, true);
+
+            maze[0][3].set(false, true); maze[1][3].set(true, false);
+            maze[2][3].set(true, false); maze[3][3].set(false, true);
+            maze[4][3].set(true, true);  maze[5][3].set(false, true);
 
 
-        maze[0][4].set(true, true);
-        maze[1][4].set(true, true);
-        maze[2][4].set(true, false);
-        maze[3][4].set(true, false);
-        maze[4][4].set(true, false);
+            maze[0][4].set(true, true);  maze[1][4].set(true, true);
+            maze[2][4].set(true, true);  maze[3][4].set(true, true);
+            maze[4][4].set(true, true);
 
-        maze[0][5].set(true, false);
-        maze[1][5].set(true, false);
-        maze[2][5].set(true, false);
-        maze[3][5].set(true, false);
-        maze[4][5].set(true, false);
+            maze[0][5].set(true, false); maze[1][5].set(true, false);
+            maze[2][5].set(true, false); maze[3][5].set(true, false);
+            maze[4][5].set(true, false);
+        }
+        else if (randomInt == 2)
+        {
+            // Maze 2
+            for (int i = 0; i < ROWS - 1; i++) {
+                for (int j = 0; j < COLS - 1; j++) {
+                    maze[i][j] = new MazeEdge(true, true);
+                }
+            }
+            // last row
+            maze[0][5].set(true, false); maze[1][5].set(true, false);
+            maze[2][5].set(true, false); maze[3][5].set(true, false);
+            maze[4][5].set(true, false);
+            // last col
+            maze[5][0].set(false, true); maze[5][1].set(false, true);
+            maze[5][2].set(false, true); maze[5][3].set(false, true);
+        }
+
     }
 
 }

@@ -1,17 +1,12 @@
 // class sets layout and adds control and body panels to screen
-//LIST OF THINGS I NEED TO DO
-//add visuals for GameCard screen
-//question feedback - relate to scoring system
-//edit scoring system based on questions
-//make new levels, make new questions, make GameModePanel - pending time
-//video
 import java.awt.BorderLayout;
-import javax.swing.*;
-import java.awt.GridLayout;
+import javax.swing.JFrame;
+
 public class Game extends JFrame
 {
     private BodyPanel bodyPanel;
     private ControlPanel controlPanel;
+    public ModalDialog dialog;
 
 
     public static void main(String[] args)
@@ -20,6 +15,8 @@ public class Game extends JFrame
         Game g = new Game();
         g.setSize(800,800);
         g.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        g.dialog = new ModalDialog(g);
+        g.dialog.setVisibility(false);
     }
 
     public Game()
@@ -29,12 +26,8 @@ public class Game extends JFrame
         setResizable(false);
         setVisible(true);
 
-        // Body Panel
-        bodyPanel = new BodyPanel(this);
-
-        // Control Panel
-        controlPanel = new ControlPanel(bodyPanel);
-
+        bodyPanel = new BodyPanel(this); // Body Panel
+        controlPanel = new ControlPanel(bodyPanel); // Control Panel
 
         // Add controlPanel and bodyPanel to JFrame
         add(controlPanel, BorderLayout.NORTH);
@@ -42,29 +35,5 @@ public class Game extends JFrame
 
     }
 
-    public void showModal(boolean isSuccess)
-    {
-        // create a dialog Box
-        JDialog d = new JDialog(this, "dialog Box");
-        d.setSize(300, 200); // setsize of dialog
-        d.setLocationRelativeTo(this);
-        // create a label
 
-        JPanel panel = new JPanel(new GridLayout(1,3));
-        panel.add(new JLabel("          "));
-
-        JLabel label = new JLabel("");
-        if(isSuccess)
-        {
-            label.setText("Good job! You got it correct!");
-        }
-        else
-        {
-            label.setText("Not quite. Please try again.");
-        }
-        d.add(label, BorderLayout.CENTER);
-        panel.add(new JLabel(""));
-
-        d.setVisible(true); // set visibility of dialog
-    }
 }

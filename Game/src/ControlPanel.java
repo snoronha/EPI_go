@@ -31,16 +31,18 @@ public class ControlPanel extends JPanel implements ActionListener
         if (e.getSource() == instructionButton)
         {                                           //showing instruction or game card depending on
             bodyPanel.showCard(bodyPanel.INSTRUCTIONS_CARD);
+            bodyPanel.gameCard.stopTimer();
         }
         else if (e.getSource() == gameButton)
         {
             bodyPanel.showCard(bodyPanel.GAME_CARD);
-            bodyPanel.gameCard.animateTimer();
+            bodyPanel.gameCard.startTimer();
         }
         else
         {
             bodyPanel.showCard(bodyPanel.GAME_CARD);
             bodyPanel.gameCard.resetGame();
+            bodyPanel.gameCard.startTimer();
         }
     }
 }
